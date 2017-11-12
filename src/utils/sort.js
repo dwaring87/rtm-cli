@@ -80,7 +80,7 @@ module.exports = {
     },
 
     /**
-     * Sort by Task Due Date
+     * Sort by Task Due Date (no due date first)
      * @param a
      * @param b
      */
@@ -90,6 +90,29 @@ module.exports = {
       }
       else if ( !a.due && b.due ) {
         return -1;
+      }
+      else if ( a.due < b.due ) {
+        return -1;
+      }
+      else if ( a.due > b.due ) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    },
+
+    /**
+     * Sort by Task Due Date (no due date last)
+     * @param a
+     * @param b
+     */
+    dueLast: function(a, b) {
+      if ( a.due && !b.due ) {
+        return -1;
+      }
+      else if ( !a.due && b.due ) {
+        return 1;
       }
       else if ( a.due < b.due ) {
         return -1;
@@ -221,6 +244,38 @@ module.exports = {
       else {
         return due;
       }
+    },
+
+    /**
+     * Sort tasks for `lsp` display (priority, due date)
+     * @param a
+     * @param b
+     * @returns {*}
+     */
+    lsp: function(a, b) {
+      let sort = require(__filename);
+
+      // Sort by Completed Status
+      let comp = sort.tasks.completed(a, b);
+      if ( comp === 0 ) {
+
+        // Sort by Priority
+        let pri = sort.tasks.priority(a, b);
+        if ( pri === 0 ) {
+
+          // Sort by Due Date
+          return sort.tasks.dueLast(a, b);
+
+        }
+        else {
+          return pri;
+        }
+
+      }
+      else {
+        return comp;
+      }
+
     }
 
   }
