@@ -88,7 +88,8 @@ function action() {
         log.style(priText, priStyle);
 
         // Print the Task List Name
-        log.style(task.list.name + ':', styles.list);
+        let listStyle = task.isCompleted ? styles.completed : styles.list;
+        log.style(task.list.name + ':', listStyle);
 
         // Print the Task Name
         log.style(' ' + task.name, priStyle);
