@@ -1,0 +1,25 @@
+{
+  "name": "rtm-cli",
+  "version": "0.0.1",
+  "description": "RTM CLI",
+  "main": "src/cli.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dwaring87/rtm-cli.git"
+  },
+  "author": "David Waring <dev@davidwaring.net> (https://davidwaring.net)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dwaring87/rtm-cli/issues"
+  },
+  "homepage": "https://github.com/dwaring87/rtm-cli#readme",
+  "dependencies": {
+    "chalk": "^2.3.0",
+    "commander": "^2.11.0",
+    "dateformat": "^3.0.2",
+    "deepmerge": "^2.0.1",
+    "opn": "^5.1.0",
+    "ora": "^1.3.0",
+    "rtm-api": "^0.9.0"
+  }
+}

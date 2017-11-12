@@ -1,0 +1,22 @@
+{
+  "client": {
+    "key": "cbc76268b901ccb8d9fc5f3aebc4ee1f",
+    "secret": "131beea786379309",
+    "perms": "delete"
+  },
+  "dateformat": "ddd mmm-dd",
+  "styles": {
+    "list": "yellow.underline",
+    "index": "dim",
+    "priority": {
+      "0": "reset",
+      "1": "red",
+      "2": "blue",
+      "3": "cyan"
+    },
+    "completed": "dim",
+    "notes": "reset",
+    "tags": "magenta",
+    "due": "green"
+  }
+}
