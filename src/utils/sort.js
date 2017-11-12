@@ -86,10 +86,10 @@ module.exports = {
      */
     due: function(a, b) {
       if ( a.due && !b.due ) {
-        return -1;
+        return 1;
       }
       else if ( !a.due && b.due ) {
-        return 1;
+        return -1;
       }
       else if ( a.due < b.due ) {
         return -1;
