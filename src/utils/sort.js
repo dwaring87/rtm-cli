@@ -180,6 +180,47 @@ module.exports = {
       else {
         return list;
       }
+    },
+
+    /**
+     * Sort tasks for `lsd` display (due date, priority, list name)
+     * @param a
+     * @param b
+     * @returns {number}
+     * @private
+     */
+    lsd: function(a, b) {
+      let sort = require(__filename);
+
+      // Sort by Due Date
+      let due = sort.tasks.due(a, b);
+      if ( due === 0 ) {
+
+        // Sort by Completed Status
+        let comp = sort.tasks.completed(a, b);
+        if ( comp === 0 ) {
+
+          // Sort By Priority
+          let pri = sort.tasks.priority(a, b);
+          if ( pri === 0 ) {
+
+            // Sort by List Name
+            return sort.tasks.listName(a, b);
+
+          }
+          else {
+            return pri;
+          }
+
+        }
+        else {
+          return comp;
+        }
+
+      }
+      else {
+        return due;
+      }
     }
 
   }
