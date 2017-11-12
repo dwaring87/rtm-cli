@@ -57,9 +57,11 @@ function _auth(callback) {
     });
 
     // Display the URL
-    log("Please open the following URL and authorize RTM CLI:");
-    log(url);
-    log("Press [enter] when complete: ", false);
+    log('Please open the following URL and authorize RTM CLI:');
+    log.style(url, 'blue.underline', true);
+    log('Press ' , false);
+    log.style('[enter]', 'red.underline');
+    log(' when complete: ', false);
 
     // Open the URL in default browser
     opn(url);
