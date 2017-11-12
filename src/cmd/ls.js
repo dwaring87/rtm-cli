@@ -12,7 +12,7 @@ const styles = config.styles;
  * This command will display all of the User's tasks sorted first by list,
  * then completed status, then priority, then due date
  */
-function action() {
+function action(args) {
 
   // Get the authenticated User
   login(function(user) {
@@ -21,9 +21,13 @@ function action() {
     log.spinner.start("Fetching Tasks...");
 
     // Get User Tasks
-    user.tasks.get(function(err, tasks) {
+    let filter = args.length > 0 ? args.join(' ') : '';
+    user.tasks.get(filter, function(err, tasks) {
       if ( err ) {
         return log.spinner.error(err.toString());
+      }
+      else if ( tasks.length === 0 ) {
+        return log.spinner.error("No tasks returned");
       }
       log.spinner.stop();
 
@@ -145,7 +149,7 @@ function _pad(index, maxIndex) {
 
 
 module.exports = {
-  command: 'ls [filter]',
+  command: 'ls [filter...]',
   description: 'List all tasks sorted first by list then by priority',
   action: action
 };
