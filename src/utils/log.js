@@ -19,6 +19,10 @@ function log(text="", newline=true) {
  * @param {boolean} [newline=true] End the log with a newline
  */
 log.info = function(text, newline=true) {
+  if ( _plain() ) {
+    return log(text, newline);
+  }
+
   let nl = newline ? '\n' : '';
   process.stdout.write(chalk.bgYellow.black(" " + text + " " + nl));
 };
@@ -38,6 +42,13 @@ log.style = function(text, style, newline) {
   else if ( newline === undefined && typeof style === 'boolean' ) {
     newline = style;
     style = 'reset';
+  }
+  else if ( newline === undefined ) {
+    newline = false;
+  }
+
+  if ( _plain() ) {
+    return log(text, newline);
   }
 
   if ( style.indexOf('bg') > -1 ) {
@@ -75,14 +86,18 @@ log.spinner = {
    * @param {string} text The text to log
    */
   start: function(text) {
-    spinner.start(text);
+    if ( !_plain() ) {
+      spinner.start(text);
+    }
   },
 
   /**
    * Stop and clear the spinner
    */
   stop: function() {
-    spinner.stop();
+    if ( !_plain() ) {
+      spinner.stop();
+    }
   },
 
   /**
@@ -90,7 +105,12 @@ log.spinner = {
    * @param {string} text The text to log
    */
   success: function(text) {
-    spinner.succeed(text);
+    if ( !_plain() ) {
+      spinner.succeed(text);
+    }
+    else {
+      log("[ok] " + text);
+    }
   },
 
   /***
@@ -98,10 +118,28 @@ log.spinner = {
    * @param {string} text The text to log
    */
   error: function(text) {
-    spinner.fail(text);
+    if ( !_plain() ) {
+      spinner.fail(text);
+    }
+    else {
+      log("[error] " + text);
+    }
   }
 
 };
+
+
+/**
+ * Check for a --plain flag
+ * @returns {boolean}
+ * @private
+ */
+function _plain() {
+  if ( global._program ) {
+    return global._program.plain === undefined ? false : global._program.plain;
+  }
+  return false;
+}
 
 
 

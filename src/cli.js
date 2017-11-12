@@ -19,7 +19,6 @@ setup();
 
 
 
-
 /**
  * Set up the program arguments, commands and options
  * @private
@@ -31,8 +30,15 @@ function setup() {
     .version(info.version)
     .usage("[options] <command> [command arguments]");
 
+  // Add Options
+  program
+    .option('-p, --plain', 'Do not print styled/colored text');
+
   // Add Program Commands
   parseCommands();
+
+  // Set program to global namespace
+  global._program = program;
 
   // Parse the Command Line Args
   program.parse(process.argv);
