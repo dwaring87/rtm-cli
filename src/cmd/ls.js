@@ -27,6 +27,10 @@ function action() {
       }
       log.spinner.stop();
 
+      // Get max task number
+      tasks.sort(sort.tasks.index);
+      let MAX_INDEX = tasks[tasks.length-1].index;
+
       // Sort Tasks
       tasks.sort(sort.tasks.ls);
 
@@ -46,7 +50,7 @@ function action() {
             log();
           }
           listname = task._list.name;
-          for ( let i = 0; i < tasks.length.toString().length+1; i++ ) {
+          for ( let i = 0; i < MAX_INDEX.toString().length+1; i++ ) {
             log(' ', false);
           }
           log.style(listname, styles.list, true);
@@ -57,7 +61,7 @@ function action() {
         // ==== PRINT TASK INFORMATION ==== //
 
         // Print Task Index
-        log.style(_pad(task.index, tasks.length) + ' ', styles.index);
+        log.style(_pad(task.index, MAX_INDEX) + ' ', styles.index);
 
         // Add the Task Priority
         let namestyle = '';
@@ -124,12 +128,12 @@ function action() {
 /**
  * Pad the Index number with leading 0s
  * @param index Task Index Number
- * @param count Number of Tasks
+ * @param maxIndex Max Task Index
  * @returns {string}
  * @private
  */
-function _pad(index, count) {
-  let max = (count-1).toString().length;
+function _pad(index, maxIndex) {
+  let max = maxIndex.toString().length;
   let digits = index.toString().length;
   let delta = max - digits;
   for ( let i = 0; i < delta; i++ ) {

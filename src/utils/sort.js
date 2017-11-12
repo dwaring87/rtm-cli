@@ -56,6 +56,16 @@ module.exports = {
   tasks: {
 
     /**
+     * Sort Tasks by Index
+     * @param a
+     * @param b
+     * @returns {number}
+     */
+    index: function(a, b) {
+      return a.index - b.index;
+    },
+
+    /**
      * Sort Tasks By Priority: 1,2,3,0
      * @param a
      * @param b
