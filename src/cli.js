@@ -3,6 +3,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const readline = require('readline');
 const program = require('commander');
 const info = require('../package.json');
 const interactive = require('./interactive.js');
@@ -15,14 +16,21 @@ const CMD_DIR = path.normalize(__dirname + '/cmd/');
 
 
 
+
 // Start the CLI Setup
 setup();
 
 
 // Start interactive mode
-if ( program.args.length === 0 ) {
+if ( process.argv.length < 3 ) {
   interactive();
 }
+
+// Parse the Command Line Args
+else {
+  program.parse(process.argv);
+}
+
 
 
 
@@ -47,8 +55,21 @@ function setup() {
   // Set program to global namespace
   global._program = program;
 
-  // Parse the Command Line Args
-  program.parse(process.argv);
+  // Set readline interface
+  global._rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    completer: function completer(line) {
+      let completions = [];
+      for ( let i = 0; i < program.commands.length; i++ ) {
+        completions.push(program.commands[i].name());
+      }
+      completions.push('quit');
+      completions.push('help');
+      let hits = completions.filter(function(c) { return c.indexOf(line) === 0 });
+      return [hits.length ? hits : completions, line]
+    }
+  });
 
 }
 

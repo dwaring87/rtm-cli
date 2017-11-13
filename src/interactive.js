@@ -1,18 +1,13 @@
 'use strict';
 
-const readline = require('readline');
-
-
-let rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-
+/**
+ * Display the Interactive Mode Prompt
+ */
 function prompt() {
   global._interactive = true;
 
   // Display the Prompt
-  rl.question("> ", function(line) {
+  global._rl.question("> ", function(line) {
 
     let params = line.trim().split(' ');
     let cmd = params[0];
@@ -20,7 +15,7 @@ function prompt() {
 
     // Exit
     if ( cmd.toLowerCase() === 'quit' || cmd.toLowerCase() === 'exit' ) {
-      rl.close();
+      global._rl.close();
       process.exit(0);
     }
 

@@ -2,7 +2,6 @@
 
 const opn = require('opn');
 const log = require('./log.js');
-const readline = require('readline');
 
 
 /**
@@ -11,7 +10,7 @@ const readline = require('readline');
  * This will save the logged in user to a configuration file.
  * @private
  */
-function login() {
+function login(callback) {
   const config = require('./config.js');
   let client = config.client;
 
@@ -33,13 +32,8 @@ function login() {
     // Open the URL in default browser
     opn(url);
 
-    let rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
-    });
-
     // Wait for User Input
-    rl.question('Press [enter] when done:', function() {
+    global._rl.question('Press [enter] when done:', function() {
       log.spinner.start('Logging In...');
 
       // Get the Authorized User
@@ -55,9 +49,14 @@ function login() {
         // Save the User to the config
         config.saveUser(user);
 
-        // Exit the Process
-        rl.close();
-        process.exit(0);
+        // Return the User
+        if ( callback ) {
+          return callback(user);
+        }
+        else {
+          process.exit(0);
+        }
+
       });
     });
   });
