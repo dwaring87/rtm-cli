@@ -44,7 +44,7 @@ function login(callback) {
         }
 
         // Display success
-        log.spinner.success('Logged in as: ' + user.username);
+        log.spinner.success('Logged in As: ' + user.username);
 
         // Save the User to the config
         config.saveUser(user);

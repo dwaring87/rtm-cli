@@ -6,6 +6,8 @@ const path = require('path');
 const readline = require('readline');
 const program = require('commander');
 const info = require('../package.json');
+const log = require('./utils/log.js');
+const config = require('./utils/config.js');
 const interactive = require('./interactive.js');
 
 /**
@@ -23,7 +25,12 @@ setup();
 
 // Start interactive mode
 if ( process.argv.length < 3 ) {
-  interactive();
+  if ( config.get()._user ) {
+    log.style("Logged In As: " + config.get()._user.username, "dim", true);
+  }
+  config.user(function() {
+    interactive();
+  });
 }
 
 // Parse the Command Line Args
