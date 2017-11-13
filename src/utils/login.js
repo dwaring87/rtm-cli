@@ -51,23 +51,20 @@ function _auth(callback) {
     }
     log.spinner.stop();
 
+    // Display the URL
+    log('Please open the following URL and authorize RTM CLI:');
+    log.style(url, 'blue.underline', true);
+
+    // Open the URL in default browser
+    opn(url);
+
     let rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout
     });
 
-    // Display the URL
-    log('Please open the following URL and authorize RTM CLI:');
-    log.style(url, 'blue.underline', true);
-    log('Press ' , false);
-    log.style('[enter]', 'red.underline');
-    log(' when complete: ', false);
-
-    // Open the URL in default browser
-    opn(url);
-
     // Wait for User Input
-    rl.on('line', function() {
+    rl.question('Press [enter] when done:', function() {
       rl.close();
       log.spinner.start('Logging In...');
 

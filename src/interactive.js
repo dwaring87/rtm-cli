@@ -3,18 +3,17 @@
 const readline = require('readline');
 
 
-let rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-
-
-
-
 function prompt() {
   global._interactive = true;
 
+  let rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
   rl.question("> ", function(line) {
+    rl.close();
+
     let params = line.trim().split(' ');
     let cmd = params[0];
     params.unshift(process.argv[0], process.argv[1]);
@@ -33,8 +32,8 @@ function prompt() {
     // Parse the line command with commander
     global._program.parse(params);
 
-    prompt();
   });
+
 }
 
 
