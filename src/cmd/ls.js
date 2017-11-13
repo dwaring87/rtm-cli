@@ -1,6 +1,7 @@
 'use strict';
 
 const df = require('dateformat');
+const interactive = require('../interactive.js');
 const login = require('../utils/login.js');
 const sort = require('../utils/sort.js');
 const log = require('../utils/log.js');
@@ -119,13 +120,27 @@ function action(args) {
 
       }
 
-      // QUIT
-      process.exit(0);
+      // Finish
+      _finish();
 
     });
 
   });
 
+}
+
+
+/**
+ * Finish the command: return to interactive prompt or exit
+ * @private
+ */
+function _finish() {
+  if ( global._interactive ) {
+    interactive();
+  }
+  else {
+    process.exit(0);
+  }
 }
 
 

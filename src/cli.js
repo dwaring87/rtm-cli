@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const program = require('commander');
 const info = require('../package.json');
+const interactive = require('./interactive.js');
 
 /**
  * Directory containing command files
@@ -16,6 +17,12 @@ const CMD_DIR = path.normalize(__dirname + '/cmd/');
 
 // Start the CLI Setup
 setup();
+
+
+// Start interactive mode
+if ( program.args.length === 0 ) {
+  interactive();
+}
 
 
 
