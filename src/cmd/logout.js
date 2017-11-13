@@ -3,11 +3,12 @@
 const log = require('../utils/log.js');
 const config = require('../utils/config.js');
 
+
 /**
  * This command removes any saved User information from the
  * config files.
  */
-function action() {
+function action(args, env, callback) {
   log.spinner.start('Logging Out...');
   config.removeUser();
   let c = config.get();
@@ -17,6 +18,7 @@ function action() {
   else {
     log.spinner.error('Could not log out');
   }
+  return callback();
 }
 
 

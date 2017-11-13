@@ -1,7 +1,6 @@
 'use strict';
 
 const df = require('dateformat');
-const interactive = require('../interactive.js');
 const login = require('../utils/login.js');
 const sort = require('../utils/sort.js');
 const log = require('../utils/log.js');
@@ -13,7 +12,7 @@ const styles = config.styles;
  * This command will display all of the User's tasks sorted first by priority,
  * then due date.
  */
-function action(args) {
+function action(args, env, callback) {
 
   // Get the authenticated User
   login(function(user) {
@@ -25,10 +24,12 @@ function action(args) {
     let filter = args.length > 0 ? args.join(' ') : '';
     user.tasks.get(filter, function(err, tasks) {
       if ( err ) {
-        return log.spinner.error(err.toString());
+        log.spinner.error(err.toString());
+        return callback();
       }
       else if ( tasks.length === 0 ) {
-        return log.spinner.error("No tasks returned");
+        log.spinner.error("No tasks returned");
+        return callback();
       }
       log.spinner.stop();
 
@@ -103,27 +104,13 @@ function action(args) {
 
       }
 
-      // Finsih
-      _finish();
+      // Finish
+      return callback();
 
     });
 
   });
 
-}
-
-
-/**
- * Finish the command: return to interactive prompt or exit
- * @private
- */
-function _finish() {
-  if ( global._interactive ) {
-    interactive();
-  }
-  else {
-    process.exit(0);
-  }
 }
 
 

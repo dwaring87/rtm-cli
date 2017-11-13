@@ -76,6 +76,15 @@ function parseCmd(file) {
   // Build Command
   let cmd = program.command(opts.command);
   cmd.description(opts.description);
-  cmd.action(opts.action);
+  cmd.action(function(args, env) {
+    opts.action(args, env, function() {
+      if ( global._interactive ) {
+        interactive();
+      }
+      else {
+        process.exit(0);
+      }
+    });
+  });
 }
 
