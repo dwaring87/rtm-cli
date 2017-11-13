@@ -49,6 +49,23 @@ function setup() {
   program
     .option('-p, --plain', 'Do not print styled/colored text');
 
+  // Add additional Help information
+  program.on('--help', function() {
+    console.log('');
+    console.log('');
+    console.log('  Documentation:');
+    console.log('');
+    console.log('    Additional docs can be found in the GitHub repo:');
+    console.log('      https://github.com/dwaring87/rtm-cli');
+    console.log('    This project uses the RTM API Wrapper for NodeJS:');
+    console.log('      https://github.com/dwaring87/rtm-api');
+    if ( config.get()._user ) {
+      console.log('');
+      console.log('');
+      console.log('  Logged In As: ' + config.get()._user.username);
+    }
+  });
+
   // Add Program Commands
   parseCommands();
 
