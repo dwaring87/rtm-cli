@@ -4,8 +4,8 @@ const df = require('dateformat');
 const login = require('../utils/login.js');
 const sort = require('../utils/sort.js');
 const log = require('../utils/log.js');
-const config = require('../utils/config.js').get();
-const styles = config.styles;
+const config = require('../utils/config.js');
+const styles = config.get().styles;
 
 
 /**
@@ -15,7 +15,8 @@ const styles = config.styles;
 function action(args, env, callback) {
 
   // Get the authenticated User
-  login(function(user) {
+  let user = config.user;
+  if ( user ) {
 
     // Start Spinner
     log.spinner.start("Fetching Tasks...");
@@ -127,7 +128,7 @@ function action(args, env, callback) {
 
     });
 
-  });
+  }
 
 }
 

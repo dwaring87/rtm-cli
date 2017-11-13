@@ -2,43 +2,18 @@
 
 const opn = require('opn');
 const log = require('./log.js');
-const config = require('./config.js');
 const readline = require('readline');
 
 
 /**
- * Get the logged in user.
+ * Start the Login Process.
  *
- * This will return the cached User or start the auth
- * process and return a new User.
- *
- * This will exit the process if the auth process fails.
- * @param callback Callback function(user)
+ * This will save the logged in user to a configuration file.
  * @private
  */
-function login(callback=function() {}) {
-  let user = config.get()._user;
-  if ( !user ) {
-    _auth(function(err, user) {
-      if ( err ) {
-        log.spinner.error("ERROR: Could not login (" + err.msg + ")");
-        process.exit(1);
-      }
-      return callback(user);
-    });
-  }
-  else {
-    return callback(user);
-  }
-}
-
-/**
- * Start the auth process
- * @param callback
- * @private
- */
-function _auth(callback) {
-  let client = config.get()._client;
+function login() {
+  const config = require('./config.js');
+  let client = config.client;
 
   log.info("Authorization Required:");
 
@@ -46,8 +21,8 @@ function _auth(callback) {
   log.spinner.start('Getting Login URL...');
   client.auth.getAuthUrl(function(err, url, frob) {
     if ( err ) {
-      log.spinner.error('Could not get Login URL');
-      return callback(err);
+      log.spinner.error('Could not get Login URL (' + err.msg + ')');
+      process.exit(1);
     }
     log.spinner.stop();
 
@@ -65,14 +40,13 @@ function _auth(callback) {
 
     // Wait for User Input
     rl.question('Press [enter] when done:', function() {
-      rl.close();
       log.spinner.start('Logging In...');
 
       // Get the Authorized User
       client.auth.getAuthToken(frob, function(err, user) {
         if ( err ) {
-          log.spinner.error('Could not Log In');
-          return callback(err);
+          log.spinner.error('Could not Log In (' + err.msg + ')');
+          process.exit(1);
         }
 
         // Display success
@@ -81,8 +55,9 @@ function _auth(callback) {
         // Save the User to the config
         config.saveUser(user);
 
-        // Return the User in the callback
-        return callback(null, user);
+        // Exit the Process
+        rl.close();
+        process.exit(0);
       });
     });
   });

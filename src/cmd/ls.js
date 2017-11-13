@@ -1,11 +1,10 @@
 'use strict';
 
 const df = require('dateformat');
-const login = require('../utils/login.js');
 const sort = require('../utils/sort.js');
 const log = require('../utils/log.js');
-const config = require('../utils/config.js').get();
-const styles = config.styles;
+const config = require('../utils/config.js');
+const styles = config.get().styles;
 
 
 /**
@@ -15,14 +14,15 @@ const styles = config.styles;
 function action(args, env, callback) {
 
   // Get the authenticated User
-  login(function(user) {
+  let user = config.user;
+  if ( user ) {
 
     // Start Spinner
     log.spinner.start("Fetching Tasks...");
 
     // Get User Tasks
     let filter = args.length > 0 ? args.join(' ') : '';
-    user.tasks.get(filter, function(err, tasks) {
+    user.tasks.get(filter, function (err, tasks) {
       if ( err ) {
         log.spinner.error(err.toString());
         return callback();
@@ -35,7 +35,7 @@ function action(args, env, callback) {
 
       // Get max task number
       tasks.sort(sort.tasks.index);
-      let MAX_INDEX = tasks[tasks.length-1].index;
+      let MAX_INDEX = tasks[tasks.length - 1].index;
 
       // Sort Tasks
       tasks.sort(sort.tasks.ls);
@@ -56,12 +56,11 @@ function action(args, env, callback) {
             log();
           }
           listname = task._list.name;
-          for ( let i = 0; i < MAX_INDEX.toString().length+1; i++ ) {
+          for ( let i = 0; i < MAX_INDEX.toString().length + 1; i++ ) {
             log(' ', false);
           }
           log.style(listname, styles.list, true);
         }
-
 
 
         // ==== PRINT TASK INFORMATION ==== //
@@ -126,7 +125,7 @@ function action(args, env, callback) {
 
     });
 
-  });
+  }
 
 }
 

@@ -14,11 +14,12 @@ function action(args, env, callback) {
   let c = config.get();
   if ( !c._user && !c.user ) {
     log.spinner.success('Logged Out');
+    process.exit(0);
   }
   else {
     log.spinner.error('Could not log out');
+    process.exit(1);
   }
-  return callback();
 }
 
 
