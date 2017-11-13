@@ -72,12 +72,11 @@ class Config {
    * If no RTMUser is saved, start the login process
    * @returns {RTMUser}
    */
-  get user() {
+  user(callback) {
     if ( !this._CONFIG._user ) {
-      login();
-      return undefined;
+      return login(callback);
     }
-    return this._CONFIG._user;
+    return callback(this._CONFIG._user);
   }
 
 

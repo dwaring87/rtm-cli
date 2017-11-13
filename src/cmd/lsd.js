@@ -15,8 +15,7 @@ const styles = config.get().styles;
 function action(args, env, callback) {
 
   // Get the authenticated User
-  let user = config.user;
-  if ( user ) {
+  config.user(function(user) {
 
     // Start Spinner
     log.spinner.start("Fetching Tasks...");
@@ -128,7 +127,7 @@ function action(args, env, callback) {
 
     });
 
-  }
+  });
 
 }
 

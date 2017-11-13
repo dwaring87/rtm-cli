@@ -12,7 +12,9 @@ const login = require('../utils/login.js');
  */
 function action(args, env, callback) {
   config.removeUser();
-  login();
+  login(function() {
+    return callback();
+  });
 }
 
 
