@@ -107,11 +107,10 @@ function _listAdded(err, index) {
 
   // Display Add Status
   if ( err ) {
-    let count = index+1;
-    log.spinner.error("Could not add list #" + count + " (" + err.msg + ")");
+    log.spinner.error("Could not add list " + LISTS[index] + " (" + err.msg + ")");
   }
   else {
-    log.spinner.start("Task Added [" + LISTS_ADDED + "/" + LISTS.length + "]...");
+    log.spinner.start("Lists Added [" + LISTS_ADDED + "/" + LISTS.length + "]...");
   }
 
   // Finish when all tasks have been added

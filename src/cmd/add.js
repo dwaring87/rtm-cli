@@ -118,8 +118,7 @@ function _taskAdded(err, index) {
 
   // Display Add Status
   if ( err ) {
-    let count = index+1;
-    log.spinner.error("Could not add task #" + count + " (" + err.msg + ")");
+    log.spinner.error("Could not add task " + TASKS[index] + " (" + err.msg + ")");
   }
   else {
     log.spinner.start("Task Added [" + TASKS_ADDED + "/" + TASKS.length + "]...");

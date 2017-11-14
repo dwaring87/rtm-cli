@@ -17,7 +17,7 @@ function action(args, env, callback) {
   config.user(function(user) {
 
     // Start Spinner
-    log.spinner.start("Fetching Tasks...");
+    log.spinner.start("Getting Tasks...");
 
     // Get User Tasks
     let filter = args.length > 0 ? args.join(' ') : '';
