@@ -19,39 +19,12 @@ const CMD_DIR = path.normalize(__dirname + '/cmd/');
 
 
 
-// Start the CLI Setup
+// Setup the Program options and commands
 setup();
 
+// Parse the CLI arguments and start the program
+start();
 
-// Start interactive mode
-if ( process.argv.length < 3 ) {
-  if ( config.get()._user ) {
-    log.style("Logged In As: " + config.get()._user.username, "dim", true);
-  }
-  config.user(function() {
-    interactive();
-  });
-}
-
-// Parse the Command Line Args
-else {
-  let commands = [];
-  for ( let i = 0; i < program.commands.length; i++ ) {
-    commands.push(program.commands[i].name());
-  }
-  let command = process.argv[2];
-
-  // Recognized Command
-  if ( commands.indexOf(command) > -1 ) {
-    program.parse(process.argv);
-  }
-
-  // Unknown command
-  else {
-    log.spinner.error("Unknown command: " + command);
-    program.help();
-  }
-}
 
 
 
@@ -148,3 +121,55 @@ function parseCmd(file) {
   });
 }
 
+
+/**
+ * Parse the CLI arguments and run the specified command
+ * or start the interactive mode
+ */
+function start() {
+
+  // Get possible commands
+  let commands = [];
+  for ( let i = 0; i < program.commands.length; i++ ) {
+    commands.push(program.commands[i].name());
+  }
+
+  // Get entered command
+  let command = undefined;
+  for ( let i = 2; i < process.argv.length; i++ ) {
+    if ( command === undefined && process.argv[i].charAt(0) !== '-' ) {
+      command = process.argv[i];
+    }
+  }
+
+  // Options given but no command
+  if ( command === undefined ) {
+    program.parse(process.argv);
+    startInteractive();
+  }
+
+  // Recognized Command
+  else if ( commands.indexOf(command) > -1 ) {
+    program.parse(process.argv);
+  }
+
+  // Unknown command
+  else {
+    log.spinner.error("Unknown command: " + command);
+    program.help();
+  }
+
+}
+
+
+/**
+ * Start the interactive mode
+ */
+function startInteractive() {
+  if ( config.get()._user ) {
+    log.style("Logged In As: " + config.get()._user.username, "dim", true);
+  }
+  config.user(function() {
+    interactive();
+  });
+}
