@@ -110,6 +110,16 @@ function parseCmd(file) {
   let cmd = program.command(opts.command);
   cmd.description(opts.description);
   cmd.alias(opts.alias);
+
+  // Add Command Options
+  if ( opts.options ) {
+    for ( let i = 0; i < opts.options.length; i++ ) {
+      let option = opts.options[i];
+      cmd.option(option.option, option.description);
+    }
+  }
+
+  // Add Command Action
   cmd.action(function(args, env) {
     opts.action(args, env, function() {
       if ( global._interactive ) {
