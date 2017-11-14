@@ -120,7 +120,21 @@ function parseCmd(file) {
   }
 
   // Add Command Action
-  cmd.action(function(args, env) {
+  cmd.action(function() {
+    let args = [];
+    for ( let i = 0; i < arguments.length-1; i++ ) {
+      let arg = arguments[i];
+      if (Array.isArray(arg) ) {
+        for ( let j = 0; j < arg.length; j++ ) {
+          args.push(arg[j]);
+        }
+      }
+      else {
+        args.push(arguments[i]);
+      }
+    }
+    let env = arguments[arguments.length-1];
+
     opts.action(args, env, function() {
       if ( global._interactive ) {
         interactive();
