@@ -6,8 +6,7 @@ const styles = config.get().styles;
 
 
 /**
- * This command removes any saved User information from the
- * config files.
+ * This command lists all of the User's RTM Lists
  */
 function action(args, env, callback) {
   config.user(function(user) {
