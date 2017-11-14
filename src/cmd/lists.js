@@ -36,6 +36,11 @@ function action(args, env, callback) {
           log.style(" locked", "dim");
         }
 
+        // List Archived
+        if ( list.archived ) {
+          log.style(" archived", "dim");
+        }
+
         // List Smart Filter
         if ( list.smart ) {
           log.style(" " + list.filter, "blue");
