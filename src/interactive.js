@@ -14,7 +14,7 @@ function prompt() {
 
     // Parse the command from the entered line
     let params = line.trim().split(' ');
-    let cmd = params[0].toLowerCase();
+    let cmd = params[0];
     params.unshift(process.argv[0], process.argv[1]);
 
     // Get possible commands
