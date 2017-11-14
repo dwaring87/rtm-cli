@@ -135,6 +135,7 @@ function _taskAdded(err, index) {
 
 module.exports = {
   command: 'add [task...]',
+  alias: 'a',
   description: 'Add a new Task [task name due date p:priority l:list t:tag]',
   action: action
 };
