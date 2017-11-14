@@ -80,7 +80,18 @@ function _addLists() {
  * @private
  */
 function _addList(index) {
-  USER.lists.add(LISTS[index], function(err) {
+  let list = LISTS[index];
+  let filter = undefined;
+
+  // Parse as Smart List
+  if ( list.indexOf(':') > -1 ) {
+    let colon = list.indexOf(':');
+    let divider = list.substring(0, colon).lastIndexOf(' ');
+    filter = list.substring(divider+1);
+    list = list.substring(0, divider);
+  }
+
+  USER.lists.add(list, filter, function(err) {
     _listAdded(err, index);
   });
 }
@@ -114,6 +125,6 @@ function _listAdded(err, index) {
 module.exports = {
   command: 'addList [name...]',
   alias: 'al',
-  description: 'Add a new List',
+  description: 'Add a new List or Smart List',
   action: action
 };
