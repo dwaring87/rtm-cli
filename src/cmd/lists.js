@@ -23,11 +23,6 @@ function action(args, env, callback) {
       for ( let i = 0; i < lists.length; i++ ) {
         let list = lists[i];
 
-        // List ID, if requested
-        if ( args.id ) {
-          log.style(list.id + " ", styles.index);
-        }
-
         // List Name
         log.style(list.name, styles.list);
 
@@ -59,11 +54,5 @@ module.exports = {
   command: 'lists',
   alias: 'l',
   description: 'Display all lists',
-  options: [
-    {
-      option: "--id",
-      description: "Display List ID Numbers"
-    }
-  ],
   action: action
 };
