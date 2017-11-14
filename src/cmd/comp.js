@@ -111,7 +111,7 @@ function _taskProcessed(err, index) {
 
 
 module.exports = {
-  command: 'complete [indices...]',
+  command: 'comp [indices...]',
   alias: 'x',
   description: 'Complete one or more Tasks',
   action: action
