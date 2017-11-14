@@ -35,7 +35,22 @@ if ( process.argv.length < 3 ) {
 
 // Parse the Command Line Args
 else {
-  program.parse(process.argv);
+  let commands = [];
+  for ( let i = 0; i < program.commands.length; i++ ) {
+    commands.push(program.commands[i].name());
+  }
+  let command = process.argv[2];
+
+  // Recognized Command
+  if ( commands.indexOf(command) > -1 ) {
+    program.parse(process.argv);
+  }
+
+  // Unknown command
+  else {
+    log.spinner.error("Unknown command: " + command);
+    program.help();
+  }
 }
 
 
