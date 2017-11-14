@@ -19,8 +19,12 @@ function prompt() {
 
     // Get possible commands
     let commands = [];
+    let aliases = [];
     for ( let i = 0; i < global._program.commands.length; i++ ) {
       commands.push(global._program.commands[i].name());
+      if ( global._program.commands[i].alias() !== undefined ) {
+        aliases.push(global._program.commands[i].alias());
+      }
     }
 
     // Exit
@@ -36,7 +40,7 @@ function prompt() {
     }
 
     // Parse the line command with commander
-    else if ( commands.indexOf(cmd) > -1 ) {
+    else if ( commands.indexOf(cmd) > -1 || aliases.indexOf(cmd) > -1 ) {
       global._program.parse(params);
     }
 

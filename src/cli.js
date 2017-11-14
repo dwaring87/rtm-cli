@@ -109,6 +109,7 @@ function parseCmd(file) {
   // Build Command
   let cmd = program.command(opts.command);
   cmd.description(opts.description);
+  cmd.alias(opts.alias);
   cmd.action(function(args, env) {
     opts.action(args, env, function() {
       if ( global._interactive ) {
@@ -130,8 +131,12 @@ function start() {
 
   // Get possible commands
   let commands = [];
+  let aliases = [];
   for ( let i = 0; i < program.commands.length; i++ ) {
     commands.push(program.commands[i].name());
+    if ( program.commands[i].alias() !== undefined ) {
+      aliases.push(program.commands[i].alias());
+    }
   }
 
   // Get entered command
@@ -149,7 +154,7 @@ function start() {
   }
 
   // Recognized Command
-  else if ( commands.indexOf(command) > -1 ) {
+  else if ( commands.indexOf(command) > -1 || aliases.indexOf(command) > -1 ) {
     program.parse(process.argv);
   }
 
