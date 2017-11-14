@@ -5,6 +5,7 @@
     "perms": "delete"
   },
   "dateformat": "ddd mmm-dd",
+  "completed": 7,
   "styles": {
     "list": "yellow.underline",
     "index": "dim",

@@ -20,8 +20,23 @@ function action(args, env, callback) {
     // Start Spinner
     log.spinner.start("Getting Tasks...");
 
-    // Get User Tasks
+    // Set Task Filter
     let filter = args.length > 0 ? args.join(' ') : '';
+    let comp = config.get().completed;
+    if ( comp === false ) {
+      if ( filter !== '' ) {
+        filter += " AND ";
+      }
+      filter += 'status:incomplete';
+    }
+    else if ( comp !== true && comp > 0 ) {
+      if ( filter !== '' ) {
+        filter += " AND ";
+      }
+      filter += '(status:incomplete OR completedWithin:"' + comp + ' days")';
+    }
+
+    // Get User Tasks
     user.tasks.get(filter, function(err, tasks) {
       if ( err ) {
         log.spinner.error(err.toString());
