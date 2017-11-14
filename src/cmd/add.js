@@ -61,6 +61,7 @@ function _prompt() {
  * Replace p: with !
  * Replace l: with #
  * Replace t: with #
+ * Replace due: with ^
  * @param task
  * @returns {string}
  * @private
@@ -69,6 +70,7 @@ function _parseTask(task) {
   task = task.replace(/p:/g, "!");
   task = task.replace(/l:/g, "#");
   task = task.replace(/t:/g, "#");
+  task = task.replace(/due:/g, "^");
   return task;
 }
 
@@ -134,6 +136,6 @@ function _taskAdded(err, index) {
 module.exports = {
   command: 'add [task...]',
   alias: 'a',
-  description: 'Add a new Task',
+  description: 'Add a new Task [task name due date p:priority l:list t:tag]',
   action: action
 };
