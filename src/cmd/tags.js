@@ -59,15 +59,26 @@ function action(args, env, callback) {
         }
       }
 
+      // Get max tag length
+      let max = 0;
+      for ( let i = 0; i < tags.length; i++ ) {
+        let l = tags[i].name.length;
+        max = l > max ? l : max;
+      }
+
       // Print Tags
       for ( let i = 0; i < tags.length; i++ ) {
         let tag = tags[i];
         log.style(tag.name, styles.tags);
-        log.style(' ');
+
+        let delta = max - tag.name.length;
+        for ( let i = 0; i < delta + 1; i++ ) {
+          log.style(' ');
+        }
+
         log.style(tag.incomplete);
         log.style('/');
-        log.style(tag.completed, 'dim');
-        log();
+        log.style(tag.completed, 'dim', true);
       }
 
       // Return
