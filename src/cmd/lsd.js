@@ -61,7 +61,7 @@ function action(args, env, callback) {
             log(' ', false);
           }
           if ( task.due !== undefined ) {
-            log.style(df(task.due, config.dateformat), styles.due, true);
+            log.style(df(task.due, config.get().dateformat), styles.due, true);
           }
           else {
             log.style("No Due Date", styles.due, true);
@@ -114,7 +114,7 @@ function action(args, env, callback) {
 
         // PrintCompleted Date
         if ( task.completed ) {
-         log.style(' x ' + df(task.completed, config.dateformat), styles.completed);
+         log.style(' x ' + df(task.completed, config.get().dateformat), styles.completed);
         }
 
         // Finish line

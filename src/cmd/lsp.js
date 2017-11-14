@@ -90,12 +90,12 @@ function action(args, env, callback) {
         // Print Due Date / Completed Date
         if ( !task.isCompleted ) {
           if ( task.due ) {
-            log.style(' | ' + df(task.due, config.dateformat), styles.due);
+            log.style(' | ' + df(task.due, config.get().dateformat), styles.due);
           }
         }
         else {
           if ( task.completed ) {
-            log.style(' x ' + df(task.completed, config.dateformat), styles.completed);
+            log.style(' x ' + df(task.completed, config.get().dateformat), styles.completed);
           }
         }
 
