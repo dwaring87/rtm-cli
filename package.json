@@ -2,6 +2,9 @@
   "name": "rtm-cli",
   "version": "0.0.1",
   "description": "RTM CLI",
+  "bin" : {
+    "rtm" : "src/cli.js"
+  },
   "main": "src/cli.js",
   "repository": {
     "type": "git",
