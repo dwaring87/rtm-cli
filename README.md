@@ -37,7 +37,7 @@ will soon be released.
 
 ## Usage
 
-The main usage of the CLI:
+The main usage of the program:
 
 ```
   Usage: rtm [options] <command> [command arguments]
@@ -217,7 +217,7 @@ Examples:
 ```
 
 
-### Remove Lists: `removeList`, `rml`
+### Remove a List: `removeList`, `rml`
 
 `removeList` `[name]`
 
@@ -234,6 +234,37 @@ Example:
 ```
 > removeList Bills
 ```
+
+
+### Rename a List: `renameList`, `mvl`
+
+`renameList` `[old name]` `[new name]`
+
+This command will change the name of the List from `old name` to `new name`.
+
+**Note:** This command will fail if there is more than one List matching the
+provided `old name`.
+
+**Note:** This command is unable to rename a 'Smart List' (the RTM API
+considers a 'Smart List' to be read-only).
+
+Example:
+```
+> renameList Food Groceries
+```
+
+
+### Reset Task Index Cache: `reset`
+
+This command will regenerate the cached lookup table used to reference a
+specific task to an index number.  This is helpful when many tasks have
+been deleted and the task indices are getting large.
+
+
+### Display all Tags: `tags`, `t`
+
+This command will display all tag names associated with the User's tasks.  Next
+to each tag will be the number of incomplete and complete Tasks for that tag.
 
 
 ## Interactive Mode
