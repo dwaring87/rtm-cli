@@ -123,28 +123,21 @@ function parseCmd(file) {
 
   // Add Command Action
   cmd.action(function() {
+
+    // Set command arguments
+    let count = arguments.length;
+    let env = arguments[count-1];
     let args = [];
-    for ( let i = 0; i < arguments.length-1; i++ ) {
+    for ( let i = 0; i < count-1; i++ ) {
       let arg = arguments[i];
-      if (Array.isArray(arg) ) {
-        for ( let j = 0; j < arg.length; j++ ) {
-          args.push(arg[j]);
-        }
-      }
-      else {
+      if ( arg !== undefined ) {
         args.push(arguments[i]);
       }
     }
-    let env = arguments[arguments.length-1];
 
-    opts.action(args, env, function() {
-      if ( global._interactive ) {
-        interactive();
-      }
-      else {
-        process.exit(0);
-      }
-    });
+    // Set command action with callback
+    opts.action(args, env);
+
   });
 }
 
@@ -173,7 +166,7 @@ function start() {
     }
   }
 
-  // Options given but no command
+  // No command given
   if ( command === undefined ) {
     program.parse(process.argv);
     startInteractive();
