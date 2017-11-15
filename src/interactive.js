@@ -10,7 +10,9 @@ function prompt() {
   global._interactive = true;
 
   // Display the Prompt
+  global._mainPrompt = true;
   global._rl.question("> ", function(line) {
+    global._mainPrompt = false;
 
     // Parse the command from the entered line
     let params = line.trim().split(' ');

@@ -73,11 +73,13 @@ function setup() {
     output: process.stdout,
     completer: function completer(line) {
       let completions = [];
-      for ( let i = 0; i < program.commands.length; i++ ) {
-        completions.push(program.commands[i].name());
+      if ( global._mainPrompt ) {
+        completions.push('help');
+        for ( let i = 0; i < program.commands.length; i++ ) {
+          completions.push(program.commands[i].name());
+        }
+        completions.push('quit');
       }
-      completions.push('quit');
-      completions.push('help');
       let hits = completions.filter(function(c) { return c.indexOf(line) === 0 });
       return [hits.length ? hits : completions, line]
     }
