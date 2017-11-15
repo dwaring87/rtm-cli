@@ -13,9 +13,6 @@ This Node module provides a command line interface, written in JavaScript,
 for the popular [Remember the Milk](https://www.rememberthemilk.com/) task list
 manager.
 
-This module uses the [rtm-api](https://github.com/dwaring87/rtm-api) module as
-a wrapper for the Remember the Milk API service.
-
 
 ## Installation
 
@@ -118,7 +115,7 @@ Examples:
 
 ### Complete a Task: `comp`, `x`
 
-`comp` `[task indices...]`
+`comp` `[indices...]`
 
 This command will mark the Tasks as complete.  Tasks are referenced by index
 number, which are displayed when listing tasks.  Multiple task indices can be
@@ -134,6 +131,109 @@ Examples:
 ```
 
 
+### Display all Lists: `lists`, `l`
+
+This command will display the names of all Lists.  If the List is a 'Smart List',
+the search criteria will be displayed alongside the list name.
+
+
+### Login: `login`
+
+This command will remove any saved RTM user information and start the
+login procedure.  An Auth URL will be displayed and opened in the User's
+browser.  This URL will ask the User to grant **RTM CLI** access to their
+account.  Once authorized, the user's information (id, username, full name
+and an Auth Token provided by RTM) will be saved locally (`$HOME/.rtm.json`
+by default).
+
+
+### Logout: `logout`
+
+This command will remove any saved RTM user information.  Any future requests
+to the RTM API Server will require the User to login again.
+
+
+### List Tasks By List, Priority: `ls`
+
+`ls` `[filter]`
+
+This command will display the User's tasks sorted first by List then by
+priority.  A filter, using RTM's [Advanced Search Syntax](https://www.rememberthemilk.com/help/?ctx=basics.search.advanced)
+can be used to filter the tasks displayed.
+
+Examples:
+```
+> ls
+> ls priority:1 AND list:Work
+```
+
+
+### List Tasks By Due Date, Priority: `lsd`
+
+`lsd` `[filter]`
+
+This command will display the User's tasks sorted first by Due Date (with
+tasks without a due date shown first) then by priority.  A filter, using RTM's
+[Advanced Search Syntax](https://www.rememberthemilk.com/help/?ctx=basics.search.advanced)
+can be used to filter the tasks displayed.
+
+Examples:
+```
+> lsd
+> lsd priority:1 AND list:Work
+```
+
+
+### List Tasks By Priority, Due Date: `lsp`
+
+`lsp` `[filter]`
+
+This command will display the User's tasks sorted first by priority then by
+due date.  A filter, using RTM's [Advanced Search Syntax](https://www.rememberthemilk.com/help/?ctx=basics.search.advanced)
+can be used to filter the tasks displayed.
+
+Examples:
+```
+> lsp
+> lsp priority:1 AND list:Work
+```
+
+
+### Set Task Priority: `pri`, `p`
+
+`pri` `[index]` `[priority]`
+
+This command will set the priority of the tasks.  Tasks are referenced by index
+number, which are displayed when listing tasks.  Acceptable priority values
+include `1`, `2`, and `3` - any other value removes the priority from the task.
+
+If no arguments are provided, a prompt allowing for multiple task and priority
+inputs is displayed.  Enter a blank line to finish adding tasks/priorities.
+
+Examples:
+```
+> pri 15 1
+> pri 14 0
+```
+
+
+### Remove Lists: `removeList`, `rml`
+
+`removeList` `[name]`
+
+This command will remove the List matching the provided `name` from the User's
+account.  Any tasks remaining in the List will be moved to the User's Inbox.
+
+**Note:** This command will fail if there is more than one List matching the
+provided list name.
+
+If no list name is provided, a prompt allowing for multiple list names to be
+entered will be displayed.  Enter a blank line to finish adding list names.
+
+Example:
+```
+> removeList Bills
+```
 
 
 ## Interactive Mode
