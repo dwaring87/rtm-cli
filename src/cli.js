@@ -124,14 +124,16 @@ function parseCmd(file) {
   // Add Command Action
   cmd.action(function() {
 
-    // Set command arguments
-    let count = arguments.length;
-    let env = arguments[count-1];
+    // Process command arguments
     let args = [];
-    for ( let i = 0; i < count-1; i++ ) {
+    let env = undefined;
+    for ( let i = 0; i < arguments.length; i++ ) {
       let arg = arguments[i];
-      if ( arg !== undefined ) {
-        args.push(arguments[i]);
+      if ( typeof arg === 'object' ) {
+        env = arg;
+      }
+      else if ( arg !== undefined ) {
+        args.push(arg);
       }
     }
 
