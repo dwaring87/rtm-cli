@@ -12,6 +12,10 @@ const finish = require('../utils/finish.js');
  * @param env
  */
 function action(args, env) {
+  let _args = [];
+  for ( let i = 0; i < args.length; i++ ) {
+    _args = _args.concat(args[i]);
+  }
 
   // Prompt for new lists
   if ( args.length === 0 ) {
@@ -20,7 +24,7 @@ function action(args, env) {
 
   // Add provided task
   else {
-    _process(args[0].join(' '));
+    _process(_args.join(' '));
   }
 
 }
@@ -80,7 +84,7 @@ function _processFinished(count, max) {
 
 
 module.exports = {
-  command: 'addList [name...]',
+  command: 'addList [name] [filter...]',
   alias: 'al',
   description: 'Add a new List or Smart List',
   action: action
