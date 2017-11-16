@@ -188,7 +188,7 @@ module.exports = {
           if ( pri === 0 ) {
 
             // Sort by Due date
-            return sort.tasks.due(a, b);
+            return sort.tasks.dueLast(a, b);
 
           }
           else {
@@ -216,7 +216,7 @@ module.exports = {
       let sort = require(__filename);
 
       // Sort by Due Date
-      let due = sort.tasks.due(a, b);
+      let due = sort.tasks.dueLast(a, b);
       if ( due === 0 ) {
 
         // Sort by Completed Status
