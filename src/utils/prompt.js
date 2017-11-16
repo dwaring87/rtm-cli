@@ -1,6 +1,7 @@
 'use strict';
 
 const finish = require('./finish.js');
+const log = require('./log.js');
 
 
 /**
@@ -20,6 +21,7 @@ function prompt(prompt, callback) {
   }
 
   // Start first prompt
+  log.style("[Enter a blank line when finished]", "dim", true);
   _prompt(0, prompts, 0, [], callback);
 
 }
