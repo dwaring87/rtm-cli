@@ -18,7 +18,7 @@ function action(args, env) {
     prompt('Task:', 'Due:', _promptFinished);
   }
 
-  // Add provided tags
+  // Use provided args
   else {
     _process(args[0], args[1].join(' '));
   }
@@ -50,7 +50,7 @@ function _process(task, due, count=1, max=1) {
     task = parseInt(task.trim());
     due = due.trim();
 
-    // Add Tags
+    // Set Due Date
     user.tasks.setDueDate(task, due, function(err) {
       if ( err ) {
         log.spinner.error("Could not set due date for Task #" + task + " (" + err.msg + ")");

@@ -43,25 +43,27 @@ function action(args, env) {
       tasks.sort(sort.tasks.lsd);
 
       // Last Due Date
-      let lastdue = -1;
+      let lastDue = undefined;
 
       // Parse each task
       for ( let i = 0; i < tasks.length; i++ ) {
         let task = tasks[i];
         let taskDue = task.due === undefined ? 0 : task.due.getTime();
 
-
         // ==== PRINT DUE DATE ==== //
 
         // Print New Due Date
-        if ( lastdue !== taskDue ) {
-          if ( lastdue !== -1 ) {
+        if ( lastDue !== taskDue ) {
+          if ( lastDue !== undefined ) {
             log();
           }
-          lastdue = task.due === undefined ? 0 : task.due.getTime();
+          // lastDue = task.due === undefined ? 0 : task.due.getTime();
+          lastDue = taskDue;
+
           for ( let i = 0; i < MAX_INDEX.toString().length+1; i++ ) {
             log(' ', false);
           }
+
           if ( task.due !== undefined ) {
             log.style(df(task.due, config.get().dateformat), styles.due, true);
           }
