@@ -1,5 +1,7 @@
 'use strict';
 
+const finish = require('./finish.js');
+
 
 /**
  * Prompt the User for a set of answers
@@ -83,7 +85,12 @@ function _finish(answers, promptcount, callback) {
       rtn.push(answer);
     }
   }
-  return callback(rtn);
+  if ( rtn.length === 0 ) {
+    return finish();
+  }
+  else {
+    return callback(rtn);
+  }
 }
 
 
