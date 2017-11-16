@@ -77,8 +77,8 @@ function _processFinished(count, max) {
 
 
 module.exports = {
-  command: 'addTag [index] [tags...]',
+  command: 'addTags [index] [tags...]',
   alias: 'at',
-  description: 'Add a tag to the Task',
+  description: 'Add one or more tags to a Task',
   action: action
 };
