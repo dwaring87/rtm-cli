@@ -6,12 +6,11 @@ Remember The Milk Command Line Interface
 
 ---
 
-> **NOTE:** This project is still being actively developed and features
-> may be added/removed/changed between updates without notice.
-
 This Node module provides a command line interface, written in JavaScript,
 for the popular [Remember the Milk](https://www.rememberthemilk.com/) task list
 manager.
+
+![](https://raw.githubusercontent.com/dwaring87/rtm-cli/master/screens/ls.png)
 
 
 ## Installation
@@ -268,6 +267,8 @@ Examples:
 > ls priority:1 AND list:Work
 ```
 
+![](https://raw.githubusercontent.com/dwaring87/rtm-cli/master/screens/ls.png)
+
 
 ### List Tasks By Due Date, Priority: `lsd`
 
@@ -284,6 +285,8 @@ Examples:
 > lsd priority:1 AND list:Work
 ```
 
+![](https://raw.githubusercontent.com/dwaring87/rtm-cli/master/screens/lsd.png)
+
 
 ### List Tasks By Priority, Due Date: `lsp`
 
@@ -298,6 +301,8 @@ Examples:
 > lsp
 > lsp priority:1 AND list:Work
 ```
+
+![](https://raw.githubusercontent.com/dwaring87/rtm-cli/master/screens/lsp.png)
 
 
 ### Move Task to List: `move`, `mv`
