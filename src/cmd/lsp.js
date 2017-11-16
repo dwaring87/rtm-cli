@@ -4,6 +4,8 @@ const df = require('dateformat');
 const login = require('../utils/login.js');
 const sort = require('../utils/sort.js');
 const log = require('../utils/log.js');
+const finish = require('../utils/finish.js');
+const parseFilter = require('../utils/filter.js');
 const config = require('../utils/config.js');
 const styles = config.get().styles;
 
@@ -12,7 +14,8 @@ const styles = config.get().styles;
  * This command will display all of the User's tasks sorted first by priority,
  * then due date.
  */
-function action(args, env, callback) {
+function action(args, env) {
+  let filter = parseFilter(args.length > 0 ? args.join(' ') : '');
 
   // Get the authenticated User
   config.user(function(user) {
@@ -20,31 +23,15 @@ function action(args, env, callback) {
     // Start Spinner
     log.spinner.start("Getting Tasks...");
 
-    // Set Task Filter
-    let filter = args.length > 0 ? args.join(' ') : '';
-    let comp = config.get().completed;
-    if ( comp === false ) {
-      if ( filter !== '' ) {
-        filter += " AND ";
-      }
-      filter += 'status:incomplete';
-    }
-    else if ( comp !== true && comp > 0 ) {
-      if ( filter !== '' ) {
-        filter += " AND ";
-      }
-      filter += '(status:incomplete OR completedWithin:"' + comp + ' days")';
-    }
-
     // Get User Tasks
     user.tasks.get(filter, function(err, tasks) {
       if ( err ) {
         log.spinner.error(err.toString());
-        return callback();
+        return finish();
       }
       else if ( tasks.length === 0 ) {
         log.spinner.error("No tasks returned");
-        return callback();
+        return finish();
       }
       log.spinner.stop();
 
@@ -120,7 +107,7 @@ function action(args, env, callback) {
       }
 
       // Finish
-      return callback();
+      return finish();
 
     });
 

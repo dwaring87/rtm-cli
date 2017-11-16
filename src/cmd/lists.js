@@ -1,6 +1,7 @@
 'use strict';
 
 const log = require('../utils/log.js');
+const finish = require('../utils/finish.js');
 const config = require('../utils/config.js');
 const styles = config.get().styles;
 
@@ -8,14 +9,15 @@ const styles = config.get().styles;
 /**
  * This command lists all of the User's RTM Lists
  */
-function action(args, env, callback) {
+function action(args, env) {
   config.user(function(user) {
     log.spinner.start("Getting Lists...");
 
+    // Get Lists
     user.lists.get(function(err, lists) {
       if ( err ) {
         log.spinner.error("Could not get lists (" + err.msg + ")");
-        return callback();
+        return finish();
       }
       log.spinner.stop();
 
@@ -44,7 +46,7 @@ function action(args, env, callback) {
         log();
       }
 
-      return callback();
+      return finish();
     });
   });
 }

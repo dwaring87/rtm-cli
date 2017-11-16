@@ -45,12 +45,13 @@ function _promptFinished(answers) {
 function _process(index, priority, count=1, max=1) {
   log.spinner.start("Setting Task Priority...");
   config.user(function(user) {
-    let _index = parseInt(index.trim());
-    let _priority = parseInt(priority.trim());
+    index = parseInt(index.trim());
+    priority = parseInt(priority.trim());
 
-    user.tasks.priority(_index, _priority, function(err) {
+    // Update Priority
+    user.tasks.priority(index, priority, function(err) {
       if ( err ) {
-        log.spinner.error("Could not update Task #" + _index + " (" + err.msg + ")");
+        log.spinner.error("Could not update Task #" + index + " (" + err.msg + ")");
       }
       _processFinished(count, max);
     });

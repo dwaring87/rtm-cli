@@ -1,6 +1,7 @@
 'use strict';
 
 const log = require('../utils/log.js');
+const finish = require('../utils/finish.js');
 const config = require('../utils/config.js');
 
 
@@ -8,7 +9,7 @@ const config = require('../utils/config.js');
  * This command removes any saved User information from the
  * config files.
  */
-function action(args, env, callback) {
+function action(args, env) {
   log.spinner.start('Logging Out...');
   config.removeUser();
   let c = config.get();
@@ -18,7 +19,7 @@ function action(args, env, callback) {
   else {
     log.spinner.error('Could not log out');
   }
-  return callback();
+  return finish();
 }
 
 

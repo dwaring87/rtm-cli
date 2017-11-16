@@ -2,13 +2,13 @@
 
 const log = require('../utils/log.js');
 const config = require('../utils/config.js');
+const finish = require('../utils/finish.js');
 const styles = config.get().styles;
-
 
 /**
  * This command lists all of the User's current RTM Task Tags
  */
-function action(args, env, callback) {
+function action(args, env) {
   config.user(function(user) {
     log.spinner.start("Getting Tags...");
 
@@ -16,7 +16,7 @@ function action(args, env, callback) {
     user.tasks.get('isTagged:true', function(err, tasks) {
       if ( err ) {
         log.spinner.error("Could not get tags (" + err.msg + ")");
-        return callback();
+        return finish();
       }
       log.spinner.stop();
 
@@ -82,7 +82,7 @@ function action(args, env, callback) {
       }
 
       // Return
-      return callback();
+      return finish();
 
     });
   });

@@ -2,110 +2,73 @@
 
 const log = require('../utils/log.js');
 const config = require('../utils/config.js');
-
-let USER = undefined;
-let TASKS = undefined;
-let TASKS_PROCESSED = undefined;
-let CALLBACK = undefined;
+const prompt = require('../utils/prompt.js');
+const finish = require('../utils/finish.js');
 
 
 /**
- * This command marks 1 or more tasks as complete
+ * This command marks 1 or more Tasks as complete
+ * @param args indices...
+ * @param env
  */
-function action(args, env, callback) {
+function action(args, env) {
+
+  // Prompt for tasks
+  if ( args.length === 0 ) {
+    prompt('Task:', _promptFinished);
+  }
+
+  // Process Tasks
+  else {
+    for ( let i = 0; i < args[0].length; i++ ) {
+      _process(args[0][i], i+1, args[0].length);
+    }
+  }
+
+}
+
+
+/**
+ * Process the returned answers
+ * @private
+ */
+function _promptFinished(answers) {
+  for ( let i = 0; i < answers.length; i++ ) {
+    let answer = answers[i];
+    _process(answer[0], i+1, answers.length);
+  }
+}
+
+
+/**
+ * Process the request
+ * @private
+ */
+function _process(task, count=1, max=1) {
+  log.spinner.start("Completing Task(s)...");
   config.user(function(user) {
+    task = parseInt(task.trim());
 
-    // Reset properties
-    USER = user;
-    TASKS = [];
-    TASKS_PROCESSED = 0;
-    CALLBACK = callback;
-
-    // No index given, prompt for task indices
-    if ( args.length === 0 ) {
-      _prompt();
-    }
-
-    // Task index given
-    else {
-      TASKS = TASKS.concat(args);
-      _processTasks();
-    }
+    // Complete Task
+    user.tasks.complete(task, function(err) {
+      if ( err ) {
+        log.spinner.error("Could not complete Task #" + task + " (" + err.msg + ")");
+      }
+      _processFinished(count, max);
+    });
 
   });
 }
 
-
 /**
- * Prompt for task indices
+ * Request Callback
  * @private
  */
-function _prompt() {
-  global._rl.question('Task: ', function (line) {
-    if ( line === '' ) {
-      _processTasks();
-    }
-    else {
-      TASKS.push(line.trim());
-      _prompt();
-    }
-  });
-}
-
-
-/**
- * Process the Tasks
- * @private
- */
-function _processTasks() {
-  if ( TASKS.length === 0 ) {
-    return CALLBACK();
-  }
-  else {
-    log.spinner.start("Completing Task(s)...");
-    let timeout = 0;
-    for ( let i = 0; i < TASKS.length; i++ ) {
-      setTimeout(function() {
-        _processTask(i)
-      }, timeout);
-      timeout = timeout + 1000;
-    }
-  }
-}
-
-/**
- * Process the Task specified by the index
- * @param index
- * @private
- */
-function _processTask(index) {
-  let task = parseInt(TASKS[index]);
-  USER.tasks.complete(task, function(err) {
-    _taskProcessed(err, index);
-  });
-}
-
-/**
- * Callback function for when a task is processed
- * @param err RTMError encountered while processing
- * @param index The index of the task processed
- * @private
- */
-function _taskProcessed(err, index) {
-  TASKS_PROCESSED++;
-
-  // Display Add Status
-  if ( err ) {
-    log.spinner.error("Could not complete task " + TASKS[index] + " (" + err.msg + ")");
-  }
-  else {
-    log.spinner.start("Tasks Completed [" + TASKS_PROCESSED + "/" + TASKS.length + "]...");
-  }
-
-  // Finish when all tasks have been added
-  if ( TASKS_PROCESSED === TASKS.length ) {
+function _processFinished(count, max) {
+  log.spinner.start("Completing Task [" + count + "/" + max + "]...");
+  if ( count === max ) {
     log.spinner.success("Task(s) Completed");
-    return CALLBACK();
+    return finish();
   }
 }
 

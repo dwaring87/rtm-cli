@@ -2,128 +2,71 @@
 
 const log = require('../utils/log.js');
 const config = require('../utils/config.js');
-
-let USER = undefined;
-let LISTS = undefined;
-let LISTS_RENAMED = undefined;
-let CALLBACK = undefined;
+const prompt = require('../utils/prompt.js');
+const finish = require('../utils/finish.js');
 
 
 /**
- * This command renames 1 or more lists from the User's account
+ * This command renames 1 or more Lists
+ * @param args old new
+ * @param env
  */
-function action(args, env, callback) {
+function action(args, env) {
+
+  // Prompt for Arguments
+  if ( args.length < 2 ) {
+    prompt('Old Name:', 'New Name:',  _promptFinished);
+  }
+
+  // Process the given arguments
+  else {
+    _process(args[0], args[1]);
+  }
+
+}
+
+
+/**
+ * Process the returned answers
+ * @private
+ */
+function _promptFinished(answers) {
+  for ( let i = 0; i < answers.length; i++ ) {
+    let answer = answers[i];
+    _process(answer[0], answer[1], i+1, answers.length);
+  }
+}
+
+
+/**
+ * Process the request
+ * @private
+ */
+function _process(oldName, newName, count=1, max=1) {
+  log.spinner.start("Renaming List(s)...");
   config.user(function(user) {
+    oldName = oldName.trim();
+    newName = newName.trim();
 
-    // Reset properties
-    USER = user;
-    LISTS = [];
-    LISTS_RENAMED = 0;
-    CALLBACK = callback;
-
-    // No list given, prompt for new lists
-    if ( args.length < 2 || args[0] === undefined || args[1] === undefined ) {
-      _prompt();
-    }
-
-    // New list given, add it
-    else {
-      LISTS.push({
-        oldName: args[0],
-        newName: args[1]
-      });
-      _renameLists();
-    }
-
-  });
-}
-
-
-/**
- * Prompt for lists names.
- * @private
- */
-function _prompt() {
-
-  // Prompt for Old Name
-  global._rl.question('Old Name: ', function(oldName) {
-    if ( oldName === '' ) {
-      _renameLists();
-    }
-    else {
-
-      // Prompt for New Name
-      global._rl.question('New Name: ', function(newName) {
-        if ( newName === '' ) {
-          _renameLists();
-        }
-        else {
-          LISTS.push({
-            oldName: oldName.trim(),
-            newName: newName.trim()
-          });
-          _prompt();
-        }
-
-      });
-    }
-  });
-}
-
-
-/**
- * Rename the processed lists
- * @private
- */
-function _renameLists() {
-  if ( LISTS.length === 0 ) {
-    return CALLBACK();
-  }
-  else {
-    log.spinner.start("Renaming List(s)...");
-    let timeout = 0;
-    for ( let i = 0; i < LISTS.length; i++ ) {
-      setTimeout(function() {
-        _removeList(i)
-      }, timeout);
-      timeout = timeout + 1000;
-    }
-  }
-}
-
-/**
- * Remove the List specified by the index from the User's account
- * @param index
- * @private
- */
-function _removeList(index) {
-  let list = LISTS[index];
-  USER.lists.rename(list.oldName, list.newName, function(err) {
-    _listRenamed(err, index);
+    // Rename List
+    user.lists.rename(oldName, newName, function(err) {
+      if ( err ) {
+        log.spinner.error("Could not Rename List " + oldName + " (" + err.msg + ")");
+      }
+      _processFinished(count, max);
+    });
   });
 }
 
 /**
- * Callback function for when a list is renamed
- * @param err RTMError encountered while renaming
- * @param index The index of the list renamed
+ * Request Callback
  * @private
  */
-function _listRenamed(err, index) {
-  LISTS_RENAMED++;
-
-  // Display Add Status
-  if ( err ) {
-    log.spinner.error("Could not rename list " + LISTS[index].oldName + " (" + err.msg + ")");
-  }
-  else {
-    log.spinner.start("Lists Renamed [" + LISTS_RENAMED + "/" + LISTS.length + "]...");
-  }
-
-  // Finish when all tasks have been added
-  if ( LISTS_RENAMED === LISTS.length ) {
+function _processFinished(count, max) {
+  log.spinner.start("Renaming List [" + count + "/" + max + "]...");
+  if ( count === max ) {
     log.spinner.success("List(s) Renamed");
-    return CALLBACK();
+    return finish();
   }
 }
 

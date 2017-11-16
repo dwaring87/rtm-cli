@@ -2,6 +2,7 @@
 
 const config = require('../utils/config.js');
 const login = require('../utils/login.js');
+const finish = require('../utils/finish.js');
 
 
 /**
@@ -10,10 +11,10 @@ const login = require('../utils/login.js');
  * login will save the User information in the first default
  * config file.
  */
-function action(args, env, callback) {
+function action(args, env) {
   config.removeUser();
   login(function() {
-    return callback();
+    return finish();
   });
 }
 
