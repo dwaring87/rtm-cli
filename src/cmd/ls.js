@@ -14,7 +14,7 @@ const styles = config.get().styles;
  * then completed status, then priority, then due date
  */
 function action(args, env) {
-  let filter = parseFilter(args.length > 0 ? args.join(' ') : '');
+  let filter = parseFilter(args.length > 0 ? args[0].join(' ') : '');
 
   // Get the authenticated User
   config.user(function(user) {
