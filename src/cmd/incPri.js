@@ -67,7 +67,7 @@ function _process(task, count=1, max=1) {
 function _processFinished(count, max) {
   log.spinner.start("Prioritizing Task [" + count + "/" + max + "]...");
   if ( count === max ) {
-    log.spinner.success("Task(s) Prioritizing");
+    log.spinner.success("Task(s) Prioritized");
     return finish();
   }
 }
