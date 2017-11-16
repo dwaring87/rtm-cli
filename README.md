@@ -52,20 +52,30 @@ The main usage of the program:
 
   Commands:
 
-    add|a [task...]                     Add a new Task [task name due date p:priority l:list t:tag]
-    addList|al [name...]                Add a new List or Smart List
+    add|a [task...]                     Add a new Task
+    addList|al [name] [filter...]       Add a new List or Smart List
+    addTags|at [index] [tags...]        Add one or more tags to a Task
     comp|x [indices...]                 Complete one or more Tasks
+    decPri|- [indices...]               Decrease the Priority of one or more Tasks
+    due [index] [due...]                Set the Due Date of a Task
+    edit [index] [name...]              Change the name of a Task
+    incPri|+ [indices...]               Increase the Priority of one or more Tasks
     lists|l                             Display all lists
     login                               Add RTM User information
     logout                              Remove RTM User information
     ls [filter...]                      List all tasks sorted first by list then by priority
     lsd [filter...]                     List all tasks sorted first by due date then by priority
     lsp [filter...]                     List all tasks sorted first by priority then due date
+    move|mv [index] [list...]           Move Task to a different List
+    postpone|pp [indices...]            Postpone one or more Tasks
     pri|p [index] [priority]            Change Task Priority
+    remove|rm [indices...]              Remove one or more Tasks
     removeList|rml [name...]            Remove a List
+    removeTags|rmt [index] [tags...]    Remove one or more tags from a Task
     renameList|mvl [oldName] [newName]  Rename a List
     reset                               Reset cached task indices
     tags|t                              Display all tags
+    uncomp|unc [indices...]             Mark one or more Tasks as not complete
 ```
 
 ## Commands
@@ -113,6 +123,25 @@ Examples:
 ```
 
 
+### Add Tags to a Task: `addTags`, `at`
+
+`addTags` `[index]` `[tags...]`
+
+This command will add one or more tags to a Task.  Tasks are referenced by index
+number, which are displayed when listing tasks.  Multiple tags can be provided
+as arguments to this command.
+
+If no arguments are provided, a prompt allowing multiple task indices and tags
+to be entered will be displayed.  Enter a blank line to finish adding tasks and
+tags.
+
+Examples:
+```
+> addTags 1 rent
+> addTags 5 rent bills
+```
+
+
 ### Complete a Task: `comp`, `x`
 
 `comp` `[indices...]`
@@ -122,12 +151,84 @@ number, which are displayed when listing tasks.  Multiple task indices can be
 provided as arguments to this command.
 
 If no arguments are provided, a prompt allowing multiple task indices to be
-entered will be displayed.  Enter a blank line to finish addind task indices.
+entered will be displayed.  Enter a blank line to finish adding task indices.
 
 Examples:
 ```
 > comp 15
 > comp 1 9 8
+```
+
+
+### Decrease Task Priority: `decPri`, `-`
+
+`decPri` `[indices...]`
+
+This command will decrease the priority of the Tasks by 1.  Tasks are referenced
+by index number, which are displayed when listing tasks.  Multiple task indices
+can be provided as arguments to this command.
+
+If no arguments are provided, a prompt allowing multiple task indices to be
+entered will be displayed.  Enter a blank line to finish adding task indices.
+
+Examples:
+```
+> decPri 15
+> decPri 1 9 8
+```
+
+
+### Set Task Due Date: `due`
+
+`due` `[index]` `[due date]`
+
+This command will set the Due Date of a Task.  Tasks are referenced by index
+number, which are displayed when listing tasks.  Due Dates can be entered in any
+format that [RTM can parse](https://www.rememberthemilk.com/help/answer/basics-basics-dateformat).
+
+If no arguments are provided, a prompt allowing multiple task and due dates to be
+entered will be displayed.  Enter a blank line to finish adding tasks and due dates.
+
+Examples:
+```
+> due 1 tomorrow
+> due 15 May 12
+> due 3 days
+```
+
+
+### Edit Task Name: `edit`
+
+`edit` `[new task name]`
+
+This command will change the name of a Task.  Tasks are referenced by index
+number, which are displayed when listing tasks.
+
+If no arguments are provided, a prompt allowing multiple task indices and names
+to be entered will be displayed.  Enter a blank line to finish adding indices
+and names.
+
+Example:
+```
+> edit 1 Buy More Milk
+```
+
+
+### Increase Task Priority: `incPri`, `+`
+
+`incPri` `[indices...]`
+
+This command will increase the priority of the Tasks by 1.  Tasks are referenced
+by index number, which are displayed when listing tasks.  Multiple task indices
+can be provided as arguments to this command.
+
+If no arguments are provided, a prompt allowing multiple task indices to be
+entered will be displayed.  Enter a blank line to finish adding task indices.
+
+Examples:
+```
+> incPri 15
+> incPri 1 9 8
 ```
 
 
@@ -199,6 +300,38 @@ Examples:
 ```
 
 
+### Move Task to List: `move`, `mv`
+
+`move` `[index]` `[list name]`
+
+This command will move a Task to a different List.  Tasks are referenced by index
+number, which are displayed when listing tasks.  The `list name` must be the
+name of an existing List.
+
+**Note:** This command will fail if there is more than 1 List matching the
+new List name.
+
+Example:
+```
+> move 1 Work
+```
+
+
+### Postpone a Task: `postpone`, `pp`
+
+`postpone` `[indices...]`
+
+This command will postpone the due date of a Task by one day.  Tasks are referenced
+by index number, which are displayed when listing tasks.  Multiple task indices
+can be provided as arguments to this command.
+
+Examples:
+```
+> postpone 1
+> postpone 1 15 8
+```
+
+
 ### Set Task Priority: `pri`, `p`
 
 `pri` `[index]` `[priority]`
@@ -214,6 +347,21 @@ Examples:
 ```
 > pri 15 1
 > pri 14 0
+```
+
+
+### Remove a Task: `remove`, `rm`
+
+`remove` `[indices...]`
+
+This command will remove the Tasks from the User's account.  Tasks are referenced
+by index number, which are displayed when listing tasks.  Multiple task indices
+can be provided as arguments to this command.
+
+Examples:
+```
+> remove 1
+> remove 1 15 8
 ```
 
 
@@ -233,6 +381,21 @@ entered will be displayed.  Enter a blank line to finish adding list names.
 Example:
 ```
 > removeList Bills
+```
+
+
+### Remove Tags From a Task: `removeTags`, `rmt`
+
+`removeTags` `[index]` `[tags...]`
+
+This command will remove one or more tags from the Task.  Tasks are referenced
+by index number, which are displayed when listing tasks.  Multiple tags can be
+provided as arguments to this command.
+
+Examples:
+```
+> removeTags 1 bills
+> removeTags 15 bills rent
 ```
 
 
@@ -265,6 +428,21 @@ been deleted and the task indices are getting large.
 
 This command will display all tag names associated with the User's tasks.  Next
 to each tag will be the number of incomplete and complete Tasks for that tag.
+
+
+### Un-Complete a Task: `uncomp`, `unc`
+
+`uncomp` `[indices...]`
+
+This command will mark the Task as incomplete.  Tasks are referenced by index
+number, which are displayed when listing tasks.  Multiple task indices can be
+provided as arguments to this command.
+
+Examples:
+```
+> uncomp 1
+> uncomp 15 8
+```
 
 
 ## Interactive Mode
