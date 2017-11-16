@@ -8,6 +8,7 @@ const program = require('commander');
 const info = require('../package.json');
 const log = require('./utils/log.js');
 const config = require('./utils/config.js');
+const finish = require('./utils/finish.js');
 const interactive = require('./interactive.js');
 
 /**
@@ -123,22 +124,31 @@ function parseCmd(file) {
 
   // Add Command Action
   cmd.action(function() {
+    let _arguments = arguments;
 
-    // Process command arguments
-    let args = [];
-    let env = undefined;
-    for ( let i = 0; i < arguments.length; i++ ) {
-      let arg = arguments[i];
-      if ( typeof arg === 'object' ) {
-        env = arg;
-      }
-      else if ( arg !== undefined ) {
-        args.push(arg);
-      }
-    }
+    // Check Login Before Running Command
+    config.user(function() {
 
-    // Set command action with callback
-    opts.action(args, env);
+      // Process command arguments
+      let args = [];
+      let env = undefined;
+      for ( let i = 0; i < _arguments.length; i++ ) {
+        let arg = _arguments[i];
+        if ( typeof arg === 'object' && !Array.isArray(arg) ) {
+          env = arg;
+        }
+        else if ( Array.isArray(arg) && arg.length > 0 ) {
+          args.push(arg);
+        }
+        else if ( !Array.isArray(arg) && arg !== undefined ) {
+          args.push(arg);
+        }
+      }
+
+      // Set command action with callback
+      opts.action(args, env);
+
+    });
 
   });
 }
@@ -195,7 +205,5 @@ function startInteractive() {
   if ( config.get()._user ) {
     log.style("Logged In As: " + config.get()._user.username, "dim", true);
   }
-  config.user(function() {
-    interactive();
-  });
+  interactive();
 }
