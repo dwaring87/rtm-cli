@@ -1,6 +1,6 @@
 {
   "name": "rtm-cli",
-  "version": "0.0.1",
+  "version": "0.9.0",
   "description": "RTM CLI",
   "keywords": [
     "rtm",
@@ -12,8 +12,8 @@
     "todo",
     "gtd"
   ],
-  "bin" : {
-    "rtm" : "src/cli.js"
+  "bin": {
+    "rtm": "src/cli.js"
   },
   "main": "src/cli.js",
   "repository": {
