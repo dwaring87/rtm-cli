@@ -84,8 +84,9 @@ function setup() {
       let hits = completions.filter(function(c) { return c.indexOf(line) === 0 });
       return [hits.length ? hits : completions, line]
     }
+  }).on('SIGINT', function() {
+    process.exit(0);
   });
-
 }
 
 
