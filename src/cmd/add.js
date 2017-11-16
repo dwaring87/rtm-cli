@@ -94,6 +94,6 @@ function _parseTask(task) {
 module.exports = {
   command: 'add [task...]',
   alias: 'a',
-  description: 'Add a new Task [task name due date p:priority l:list t:tag]',
+  description: 'Add a new Task',
   action: action
 };
