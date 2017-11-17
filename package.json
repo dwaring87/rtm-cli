@@ -17,7 +17,7 @@
   },
   "main": "src/cli.js",
   "scripts": {
-    "preversion": "npm run build",
+    "postversion": "npm run build",
     "build": "node build.js"
   },
   "repository": {

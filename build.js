@@ -73,11 +73,9 @@ function pack() {
         throw err;
       });
 
-      console.log(os);
       if ( os === 'win' ) {
         name = name + '.exe';
       }
-      console.log(name);
 
       archive.pipe(zip);
       archive.file(binFile, {name: name});
