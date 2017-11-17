@@ -1,6 +1,5 @@
 'use strict';
 
-const opn = require('opn');
 const log = require('./log.js');
 
 
@@ -28,9 +27,6 @@ function login(callback) {
     // Display the URL
     log('Please open the following URL and authorize RTM CLI:');
     log.style(url, 'blue.underline', true);
-
-    // Open the URL in default browser
-    opn(url);
 
     // Wait for User Input
     global._rl.question('Press [enter] when done:', function() {
