@@ -28,10 +28,9 @@ which will install the executable `rtm` into your `$PATH`.
 
 ### Executable Releases
 
-**COMING SOON**
-
 Standalone executables, that do not require a pre-existing installation of Node,
-will soon be released.
+are available in the [Releases](https://github.com/dwaring87/rtm-cli/releases)
+page.
 
 
 ## Usage
@@ -76,6 +75,15 @@ The main usage of the program:
     tags|t                              Display all tags
     uncomp|unc [indices...]             Mark one or more Tasks as not complete
 ```
+
+
+## Interactive Mode
+
+An interactive mode is started when no commands are given to `rtm`, which
+allows commands to be given sequentially.
+
+Use the `quit` command to leave the interactive mode.
+
 
 ## Commands
 
@@ -450,13 +458,6 @@ Examples:
 ```
 
 
-## Interactive Mode
-
-An interactive mode is started when no commands are given to `rtm`, which
-allows commands to be given sequentially.
-
-Use the `quit` command to leave the interactive mode.
-
-
 ## Configuration
 
+More information about configuration is coming soon.
