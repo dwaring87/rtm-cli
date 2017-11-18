@@ -125,31 +125,34 @@ function parseCmd(file) {
 
   // Add Command Action
   cmd.action(function() {
-    let _arguments = arguments;
+
+    // Process command arguments
+    let args = [];
+    let env = undefined;
+    for ( let i = 0; i < arguments.length; i++ ) {
+      let arg = arguments[i];
+      if ( typeof arg === 'object' && !Array.isArray(arg) ) {
+        env = arg;
+      }
+      else if ( Array.isArray(arg) && arg.length > 0 ) {
+        args.push(arg);
+      }
+      else if ( !Array.isArray(arg) && arg !== undefined ) {
+        args.push(arg);
+      }
+    }
+
+    // Skip Login Check
+    if ( opts.command === 'login' || opts.command === 'logout' ) {
+      opts.action(args, env);
+    }
 
     // Check Login Before Running Command
-    config.user(function() {
-
-      // Process command arguments
-      let args = [];
-      let env = undefined;
-      for ( let i = 0; i < _arguments.length; i++ ) {
-        let arg = _arguments[i];
-        if ( typeof arg === 'object' && !Array.isArray(arg) ) {
-          env = arg;
-        }
-        else if ( Array.isArray(arg) && arg.length > 0 ) {
-          args.push(arg);
-        }
-        else if ( !Array.isArray(arg) && arg !== undefined ) {
-          args.push(arg);
-        }
-      }
-
-      // Set command action with callback
-      opts.action(args, env);
-
-    });
+    else {
+      config.user(function() {
+        opts.action(args, env);
+      });
+    }
 
   });
 }
