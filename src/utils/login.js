@@ -1,6 +1,7 @@
 'use strict';
 
 const log = require('./log.js');
+const finish = require('../utils/finish.js');
 
 
 /**
@@ -20,7 +21,7 @@ function login(callback) {
   client.auth.getAuthUrl(function(err, url, frob) {
     if ( err ) {
       log.spinner.error('Could not get Login URL (' + err.msg + ')');
-      process.exit(1);
+      return finish();
     }
     log.spinner.stop();
 
@@ -36,7 +37,7 @@ function login(callback) {
       client.auth.getAuthToken(frob, function(err, user) {
         if ( err ) {
           log.spinner.error('Could not Log In (' + err.msg + ')');
-          process.exit(1);
+          return finish();
         }
 
         // Display success
@@ -50,7 +51,7 @@ function login(callback) {
           return callback(user);
         }
         else {
-          process.exit(0);
+          return finish();
         }
 
       });
