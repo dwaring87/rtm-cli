@@ -164,39 +164,15 @@ function parseCmd(file) {
  */
 function start() {
 
-  // Get possible commands
-  let commands = [];
-  let aliases = [];
-  for ( let i = 0; i < program.commands.length; i++ ) {
-    commands.push(program.commands[i].name());
-    if ( program.commands[i].alias() !== undefined ) {
-      aliases.push(program.commands[i].alias());
-    }
-  }
+  // Parse the process arguments
+  program.parse(process.argv);
 
-  // Get entered command
-  let command = undefined;
-  for ( let i = 2; i < process.argv.length; i++ ) {
-    if ( command === undefined && process.argv[i].charAt(0) !== '-' ) {
-      command = process.argv[i];
-    }
-  }
+  // Get parsed command
+  let command = global._program.args[global._program.args.length-1];
 
-  // No command given
+  // Start interactive mode if no command
   if ( command === undefined ) {
-    program.parse(process.argv);
     startInteractive();
-  }
-
-  // Recognized Command
-  else if ( commands.indexOf(command) > -1 || aliases.indexOf(command) > -1 ) {
-    program.parse(process.argv);
-  }
-
-  // Unknown command
-  else {
-    log.spinner.error("Unknown command: " + command);
-    program.help();
   }
 
 }
