@@ -87,6 +87,13 @@ function setup() {
   }).on('SIGINT', function() {
     process.exit(0);
   });
+
+  // Catch Thrown Errors
+  process.on('uncaughtException', function(err) {
+    log.error("ERROR: " + err);
+    finish();
+  });
+
 }
 
 
