@@ -26,7 +26,7 @@ function action(args, env) {
     // Get User Tasks
     user.tasks.get(filter, function(err, tasks) {
       if ( err ) {
-        log.spinner.error(err.toString());
+        log.spinner.error("Could not get tasks (" + err.msg + ")");
         return finish();
       }
       else if ( tasks.length === 0 ) {
