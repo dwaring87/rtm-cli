@@ -43,7 +43,10 @@ function setup() {
 
   // Add Options
   program
-    .option('-p, --plain', 'Do not print styled/colored text');
+    .option('-p, --plain', 'Do not print styled/colored text')
+    .option('-c, --config [file]', 'Provide configuration file', function(file) {
+      config.read(file);
+    });
 
   // Add additional Help information
   program.on('--help', function() {
