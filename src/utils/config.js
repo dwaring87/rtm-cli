@@ -154,8 +154,16 @@ class Config {
   _parseOptions() {
     if ( global._program ) {
 
-      // Parse plain
-      this._CONFIG.plain = global._program.plain === undefined ? this._CONFIG.plain : global._program.plain;
+      // Parse plain & styled flags
+      if ( global._program.styled ) {
+        this._CONFIG.plain = false;
+        delete global._program.styled;
+      }
+      if ( global._program.plain ) {
+        this._CONFIG.plain = true;
+        delete global._program.plain;
+      }
+
 
       // Parse completed
       let completed = global._program.completed === undefined ? this._CONFIG.completed : global._program.completed;

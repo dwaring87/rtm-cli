@@ -43,7 +43,8 @@ function setup() {
 
   // Add Options
   program
-    .option('-p, --plain', 'do not print styled/colored text')
+    .option('--plain', 'do not use styled/colored text (overrides --styled)')
+    .option('--styled', 'use styled/colored text')
     .option('-c, --completed [value]', 'set display of completed tasks (true/false/number of days)')
     .option('--config [file]', 'specify configuration file', function(file) {
       config.reset(file);
@@ -241,7 +242,7 @@ function start() {
     log.spinner.error('ERROR: Unknown Command');
     program.help();
   }
-  
+
 }
 
 
