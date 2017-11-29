@@ -14,9 +14,9 @@ const login = require('./login.js');
 const BASE_CONFIG = path.normalize(__dirname + '/../../config.json');
 
 /**
- * User Configuration
+ * Default User Configuration
  */
-let USER_CONFIG = path.normalize(os.homedir() + '/.rtm.json');
+let DEFAULT_USER_CONFIG = path.normalize(os.homedir() + '/.rtm.json');
 
 
 /**
@@ -24,14 +24,23 @@ let USER_CONFIG = path.normalize(os.homedir() + '/.rtm.json');
  */
 class Config {
 
+
   /**
    * Set up a new Configuration
    */
   constructor() {
-    this._CONFIG = {};
+    this.reset(DEFAULT_USER_CONFIG);
+  }
 
+  /**
+   * Reset the RTM Configuration with the specified User config file
+   * @param {string} file User Config File
+   */
+  reset(file) {
+    this._CONFIG = {};
     this.read(BASE_CONFIG);
-    this.read(USER_CONFIG);
+    this.read(file);
+    this.USER_CONFIG = file;
   }
 
 
@@ -111,11 +120,11 @@ class Config {
   saveUser(user) {
     this._CONFIG._user = user;
     let config = {};
-    if ( fs.existsSync(USER_CONFIG) ) {
-      config = JSON.parse(fs.readFileSync(USER_CONFIG, 'utf-8'));
+    if ( fs.existsSync(this.USER_CONFIG) ) {
+      config = JSON.parse(fs.readFileSync(this.USER_CONFIG, 'utf-8'));
     }
     config.user = this.client.user.export(user);
-    fs.writeFileSync(USER_CONFIG, JSON.stringify(config, null, 2));
+    fs.writeFileSync(this.USER_CONFIG, JSON.stringify(config, null, 2));
   }
 
 
@@ -123,11 +132,11 @@ class Config {
    * Remove any saved RTM User information from the User config file
    */
   removeUser() {
-    if ( fs.existsSync(USER_CONFIG) ) {
-      let config = JSON.parse(fs.readFileSync(USER_CONFIG, 'utf-8'));
+    if ( fs.existsSync(this.USER_CONFIG) ) {
+      let config = JSON.parse(fs.readFileSync(this.USER_CONFIG, 'utf-8'));
       if ( config.user ) {
         delete config.user;
-        fs.writeFileSync(USER_CONFIG, JSON.stringify(config, null, 2));
+        fs.writeFileSync(this.USER_CONFIG, JSON.stringify(config, null, 2));
       }
     }
     if ( this._CONFIG.user ) {

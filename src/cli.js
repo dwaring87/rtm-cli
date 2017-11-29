@@ -43,10 +43,10 @@ function setup() {
 
   // Add Options
   program
-    .option('-p, --plain', 'Do not print styled/colored text')
-    .option('-c, --completed [value]', 'Set display of completed tasks (true/false/number of days)')
-    .option('--config [file]', 'Provide configuration file', function(file) {
-      config.read(file);
+    .option('-p, --plain', 'do not print styled/colored text')
+    .option('-c, --completed [value]', 'set display of completed tasks (true/false/number of days)')
+    .option('--config [file]', 'specify configuration file', function(file) {
+      config.reset(file);
     });
 
   // Add additional Help information
