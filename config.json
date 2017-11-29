@@ -20,5 +20,13 @@
     "notes": "reset",
     "tags": "magenta",
     "due": "green"
-  }
+  },
+  "filters": [
+    {
+      "name": "today",
+      "description": "Display prioritized tasks and tasks due or completed today",
+      "command": "lsp",
+      "filter": "(not priority:none and status:incomplete) or completed:today or (due:today and status:incomplete)"
+    }
+  ]
 }

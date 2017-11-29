@@ -47,6 +47,7 @@ function setup() {
     .option('-c, --completed [value]', 'set display of completed tasks (true/false/number of days)')
     .option('--config [file]', 'specify configuration file', function(file) {
       config.reset(file);
+      parseFilters();
     });
 
   // Add additional Help information
@@ -68,6 +69,9 @@ function setup() {
 
   // Add Program Commands
   parseCommands();
+
+  // Parse Filters
+  parseFilters();
 
   // Set program to global namespace
   global._program = program;
@@ -166,6 +170,38 @@ function parseCmd(file) {
     }
 
   });
+}
+
+
+/**
+ * Parse the Filter Commands from the Config Files
+ */
+function parseFilters() {
+  if ( config.get().filters ) {
+    for ( let i = 0; i < config.get().filters.length; i++ ) {
+      let filter = config.get().filters[i];
+
+      // Add command to program
+      let cmd = program.command(filter.name);
+      cmd.description(filter.description);
+
+      // Set Command
+      cmd.action(function() {
+
+        // Find Command File
+        let run = require('./cmd/' + filter.command + '.js');
+
+        // Check Login Before Running Command
+        config.user(function() {
+
+          // Run Command With Filter
+          run.action([[filter.filter]]);
+
+        });
+
+      });
+    }
+  }
 }
 
 
