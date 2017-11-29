@@ -6,6 +6,7 @@
   },
   "dateformat": "ddd mmm-dd",
   "completed": 7,
+  "plain": false,
   "styles": {
     "list": "yellow.underline",
     "index": "dim",

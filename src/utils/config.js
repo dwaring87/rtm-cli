@@ -51,6 +51,7 @@ class Config {
     if ( this._CONFIG === {} ) {
       throw "No Configuration Set";
     }
+    this.parseOptions();
     return this._CONFIG;
   }
 
@@ -134,6 +135,16 @@ class Config {
     }
     if ( this._CONFIG._user ) {
       delete this._CONFIG._user;
+    }
+  }
+
+
+  /**
+   * Parse the command line options (override from config files)
+   */
+  parseOptions() {
+    if ( global._program ) {
+      this._CONFIG.plain = global._program.plain === undefined ? this._CONFIG.plain : global._program.plain;
     }
   }
 

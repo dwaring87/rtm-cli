@@ -135,10 +135,7 @@ log.spinner = {
  * @private
  */
 function _plain() {
-  if ( global._program ) {
-    return global._program.plain === undefined ? false : global._program.plain;
-  }
-  return false;
+  return require('./config.js').get().plain;
 }
 
 
