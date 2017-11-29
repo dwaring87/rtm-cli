@@ -43,37 +43,42 @@ The main usage of the program:
 
   Options:
 
-    -V, --version  output the version number
-    -p, --plain    Do not print styled/colored text
-    -h, --help     output usage information
+      -V, --version            output the version number
+      --plain                  do not use styled/colored text (overrides --styled)
+      --styled                 use styled/colored text
+      -c, --completed [value]  set display of completed tasks (true/false/number of days)
+      --config [file]          specify configuration file
+      -h, --help               output usage information
 
 
-  Commands:
+    Commands:
 
-    add|a [task...]                     Add a new Task
-    addList|al [name] [filter...]       Add a new List or Smart List
-    addTags|at [index] [tags...]        Add one or more tags to a Task
-    comp|x [indices...]                 Complete one or more Tasks
-    decPri|- [indices...]               Decrease the Priority of one or more Tasks
-    due [index] [due...]                Set the Due Date of a Task
-    edit [index] [name...]              Change the name of a Task
-    incPri|+ [indices...]               Increase the Priority of one or more Tasks
-    lists|l                             Display all lists
-    login                               Add RTM User information
-    logout                              Remove RTM User information
-    ls [filter...]                      List all tasks sorted first by list then by priority
-    lsd [filter...]                     List all tasks sorted first by due date then by priority
-    lsp [filter...]                     List all tasks sorted first by priority then due date
-    move|mv [index] [list...]           Move Task to a different List
-    postpone|pp [indices...]            Postpone one or more Tasks
-    pri|p [index] [priority]            Change Task Priority
-    remove|rm [indices...]              Remove one or more Tasks
-    removeList|rml [name...]            Remove a List
-    removeTags|rmt [index] [tags...]    Remove one or more tags from a Task
-    renameList|mvl [oldName] [newName]  Rename a List
-    reset                               Reset cached task indices
-    tags|t                              Display all tags
-    uncomp|unc [indices...]             Mark one or more Tasks as not complete
+      add|a [task...]                     Add a new Task
+      addList|al [name] [filter...]       Add a new List or Smart List
+      addTags|at [index] [tags...]        Add one or more tags to a Task
+      comp|x [indices...]                 Complete one or more Tasks
+      decPri|- [indices...]               Decrease the Priority of one or more Tasks
+      due [index] [due...]                Set the Due Date of a Task
+      edit [index] [name...]              Change the name of a Task
+      incPri|+ [indices...]               Increase the Priority of one or more Tasks
+      lists|l                             Display all lists
+      login                               Add RTM User information
+      logout                              Remove RTM User information
+      ls [filter...]                      List all tasks sorted first by list then by priority
+      lsd [filter...]                     List all tasks sorted first by due date then by priority
+      lsp [filter...]                     List all tasks sorted first by priority then due date
+      move|mv [index] [list...]           Move Task to a different List
+      postpone|pp [indices...]            Postpone one or more Tasks
+      pri|p [index] [priority]            Change Task Priority
+      remove|rm [indices...]              Remove one or more Tasks
+      removeList|rml [name...]            Remove a List
+      removeTags|rmt [index] [tags...]    Remove one or more tags from a Task
+      renameList|mvl [oldName] [newName]  Rename a List
+      reset                               Reset cached task indices
+      tags|t                              Display all tags
+      uncomp|unc [indices...]             Mark one or more Tasks as not complete
+      whoami                              Display RTM user information
+      today                               Display prioritized tasks and tasks due or completed today
 ```
 
 
@@ -83,6 +88,61 @@ An interactive mode is started when no commands are given to `rtm`, which
 allows commands to be given sequentially.
 
 Use the `quit` command to leave the interactive mode.
+
+
+## Options
+
+
+### Plain Output: `--plain`
+
+Display output text without any styling and/or colors.  This option overrides
+the default in the configuration files.
+
+**Note:** This option overrides `--styled`, if provided.
+
+**Default:** Display styled/colored output.
+
+
+### Styled Output: `--styled`
+
+Display output text using special styling and/or colors.  This option overrides
+the default in the configuration files.
+
+**Default:** Display styled/colored output.
+
+
+### Completed Tasks: `--completed [value]`, `-c [value]`
+
+Specify how completed tasks should be displayed.  This option overrides the
+default in the configuration files.  Valid values include:
+
+| Value | Description |
+| :---: | ----------- |
+| true | Display all completed tasks |
+| false | Don't display any completed tasks |
+| n > 0 | Display tasks completed within `n` days |
+
+**Default:** 7
+
+
+### Configuration File: `--config [file]`
+
+Specify a configuration file to use.  Properties in this file will override the
+default configuration properties.  RTM User information will be stored in this
+file.
+
+**Default:** `$HOME/.rtm.json`
+
+
+### Version Information: `--version`, `-v`
+
+Display RTM CLI version
+
+
+### Help: `--help`, `-h`
+
+Display Usage Information
+
 
 
 ## Commands
