@@ -8,13 +8,15 @@ const merge = require('deepmerge');
 const login = require('./login.js');
 
 
+/**
+ * Default Configuration
+ */
 const BASE_CONFIG = path.normalize(__dirname + '/../../config.json');
 
-const DEFAULT_CONFIG_LOCATIONS = [
-  path.normalize(os.homedir() + '/.rtm.json'),
-  path.normalize(os.homedir() + '/rtm.json'),
-  path.normalize(process.cwd() + '/rtm.json')
-];
+/**
+ * User Configuration
+ */
+let USER_CONFIG = path.normalize(os.homedir() + '/.rtm.json');
 
 
 /**
@@ -27,12 +29,9 @@ class Config {
    */
   constructor() {
     this._CONFIG = {};
-    this._CONFIG_FILES = [];
 
     this.read(BASE_CONFIG);
-    for ( let i = 0; i < DEFAULT_CONFIG_LOCATIONS.length; i++ ) {
-      this.read(DEFAULT_CONFIG_LOCATIONS[i]);
-    }
+    this.read(USER_CONFIG);
   }
 
 
@@ -87,17 +86,8 @@ class Config {
   read(file) {
     if ( file && fs.existsSync(file) ) {
 
-      // Add file to list of used config files
-      if ( this._CONFIG_FILES.indexOf(file) === -1 ) {
-        this._CONFIG_FILES.push(file);
-      }
-
       // Read the config file
-      let config = require(file);
-
-      // Reset CONFIG client and user
-      delete this._CONFIG._client;
-      delete this._CONFIG._user;
+      let config = JSON.parse(fs.readFileSync(file, 'utf-8'));
 
       // Merge config into CONFIG
       this._CONFIG = merge(this._CONFIG, config, {
@@ -114,33 +104,29 @@ class Config {
 
 
   /**
-   * Save the RTM User to the configuration file
+   * Save the RTM User to the user configuration file
    * @param {RTMUser} user RTM User to save
-   * @param {string} [file] Configuration file to save to
    */
-  saveUser(user, file=DEFAULT_CONFIG_LOCATIONS[0]) {
+  saveUser(user) {
+    this._CONFIG._user = user;
     let config = {};
-    if ( fs.existsSync(file) ) {
-      config = require(file);
+    if ( fs.existsSync(USER_CONFIG) ) {
+      config = JSON.parse(fs.readFileSync(USER_CONFIG, 'utf-8'));
     }
     config.user = this.client.user.export(user);
-    fs.writeFileSync(file, JSON.stringify(config));
-    this.read(file);
+    fs.writeFileSync(USER_CONFIG, JSON.stringify(config, null, 2));
   }
 
 
   /**
-   * Remove any saved RTM User information from all configuration files
+   * Remove any saved RTM User information from the User config file
    */
   removeUser() {
-    for ( let i = 0; i < this._CONFIG_FILES.length; i++ ) {
-      let file = this._CONFIG_FILES[i];
-      if ( fs.existsSync(file) ) {
-        let config = require(file);
-        if ( config.user ) {
-          delete config.user;
-          fs.writeFileSync(file, JSON.stringify(config));
-        }
+    if ( fs.existsSync(USER_CONFIG) ) {
+      let config = JSON.parse(fs.readFileSync(USER_CONFIG, 'utf-8'));
+      if ( config.user ) {
+        delete config.user;
+        fs.writeFileSync(USER_CONFIG, JSON.stringify(config, null, 2));
       }
     }
     if ( this._CONFIG.user ) {
@@ -157,6 +143,11 @@ class Config {
    * @private
    */
   _parseConfig() {
+
+    // Reset CONFIG client and user
+    delete this._CONFIG._client;
+    delete this._CONFIG._user;
+
     // Set the RTM Client
     if ( this._CONFIG.client ) {
       this._CONFIG._client = new api(
@@ -173,6 +164,7 @@ class Config {
       }
       catch(exception) {}
     }
+
   }
 
 
