@@ -236,6 +236,12 @@ function start() {
     startInteractive();
   }
 
+  // Unknown Command
+  else if ( typeof command === 'string' ) {
+    log.spinner.error('ERROR: Unknown Command');
+    program.help();
+  }
+  
 }
 
 
