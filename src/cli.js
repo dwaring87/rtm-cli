@@ -44,7 +44,8 @@ function setup() {
   // Add Options
   program
     .option('-p, --plain', 'Do not print styled/colored text')
-    .option('-c, --config [file]', 'Provide configuration file', function(file) {
+    .option('-c, --completed [value]', 'Set display of completed tasks (true/false/number of days)')
+    .option('--config [file]', 'Provide configuration file', function(file) {
       config.read(file);
     });
 

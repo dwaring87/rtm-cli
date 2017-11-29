@@ -51,7 +51,7 @@ class Config {
     if ( this._CONFIG === {} ) {
       throw "No Configuration Set";
     }
-    this.parseOptions();
+    this._parseOptions();
     return this._CONFIG;
   }
 
@@ -142,9 +142,25 @@ class Config {
   /**
    * Parse the command line options (override from config files)
    */
-  parseOptions() {
+  _parseOptions() {
     if ( global._program ) {
+
+      // Parse plain
       this._CONFIG.plain = global._program.plain === undefined ? this._CONFIG.plain : global._program.plain;
+
+      // Parse completed
+      let completed = global._program.completed === undefined ? this._CONFIG.completed : global._program.completed;
+      if ( completed.toString().toLowerCase() === 'true' ) {
+        completed = true;
+      }
+      else if ( completed.toString().toLowerCase() === 'false' ) {
+        completed = false;
+      }
+      else {
+        completed = parseInt(completed);
+      }
+      this._CONFIG.completed = completed;
+
     }
   }
 
