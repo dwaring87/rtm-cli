@@ -1,5 +1,6 @@
 'use strict';
 
+const cp = require('copy-paste');
 const log = require('./log.js');
 const finish = require('../utils/finish.js');
 
@@ -25,12 +26,17 @@ function login(callback) {
     }
     log.spinner.stop();
 
+    // Copy URL to clipboard
+    cp.copy(url);
+
     // Display the URL
-    log('Please open the following URL and authorize RTM CLI:');
+    log.style('Please open the following URL (');
+    log.style('copied to clipboard', 'bold.underline');
+    log.style(') and authorize RTM CLI:', true);
     log.style(url, 'blue.underline', true);
 
     // Wait for User Input
-    global._rl.question('Press [enter] when done:', function() {
+    global._rl.question('Press [enter] when done: ', function() {
       log.spinner.start('Logging In...');
 
       // Get the Authorized User
