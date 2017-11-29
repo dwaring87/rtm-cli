@@ -181,25 +181,39 @@ function parseFilters() {
     for ( let i = 0; i < config.get().filters.length; i++ ) {
       let filter = config.get().filters[i];
 
-      // Add command to program
-      let cmd = program.command(filter.name);
-      cmd.description(filter.description);
+      // Check for existing command name
+      let found = false;
+      let existing = program.commands;
+      for ( let j = 0; j < existing.length; j++ ) {
+        if ( existing[j].name() === filter.name ) {
+          found = true;
+        }
+      }
 
-      // Set Command
-      cmd.action(function() {
+      // Add command to program, if not already added
+      if ( !found ) {
 
-        // Find Command File
-        let run = require('./cmd/' + filter.command + '.js');
+        // Create Command with description
+        let cmd = program.command(filter.name);
+        cmd.description(filter.description);
 
-        // Check Login Before Running Command
-        config.user(function() {
+        // Set Command Action
+        cmd.action(function () {
 
-          // Run Command With Filter
-          run.action([[filter.filter]]);
+          // Find Command File
+          let run = require('./cmd/' + filter.command + '.js');
+
+          // Check Login Before Running Command
+          config.user(function () {
+
+            // Run Command With Filter
+            run.action([[filter.filter]]);
+
+          });
 
         });
-
-      });
+        
+      }
     }
   }
 }
