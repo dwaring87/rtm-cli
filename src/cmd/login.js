@@ -22,5 +22,6 @@ function action(args, env) {
 module.exports = {
   command: 'login',
   description: 'Add RTM User information',
-  action: action
+  action: action,
+  disableLogin: true
 };

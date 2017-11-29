@@ -26,5 +26,6 @@ function action(args, env) {
 module.exports = {
   command: 'logout',
   description: 'Remove RTM User information',
-  action: action
+  action: action,
+  disableLogin: true
 };

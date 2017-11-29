@@ -154,7 +154,7 @@ function parseCmd(file) {
     }
 
     // Skip Login Check
-    if ( opts.command === 'login' || opts.command === 'logout' ) {
+    if ( opts.disableLogin ) {
       opts.action(args, env);
     }
 
