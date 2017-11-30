@@ -9,26 +9,32 @@ const config = require('../utils/config.js');
  */
 function filter(filter) {
 
+  // Filters
+  let filters = [];
+
   // Generate Completed Filter
-  let compFilter = '';
   let comp = config.get().completed;
   if ( comp === false ) {
-    compFilter = 'status:incomplete';
+    filters.push('(status:incomplete)');
   }
   else if ( comp !== true && comp > 0 ) {
-    compFilter = 'status:incomplete OR completedWithin:"' + comp + ' days"';
+    filters.push('(status:incomplete OR completedWithin:"' + comp + ' days")');
+  }
+
+  // Generate Due Filter
+  let due = config.get().hideDue;
+  if ( typeof due === 'number' && due > 0 ) {
+    filters.push('(NOT dueAfter:"' + due + ' days")');
   }
 
   // Add user filter
-  let rtn = '';
   if ( filter.trim() !== '' ) {
-    rtn = '(' + compFilter + ') AND (' + filter + ')';
-  }
-  else {
-    rtn = compFilter;
+    filters.push('(' + filter + ')');
   }
 
-  return rtn;
+  // Join filters
+  return filters.join(' AND ');
+
 }
 
 module.exports = filter;
