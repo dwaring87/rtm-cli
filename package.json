@@ -37,7 +37,7 @@
     "dateformat": "^3.0.2",
     "deepmerge": "^2.0.1",
     "ora": "^1.3.0",
-    "rtm-api": "^1.0.0"
+    "rtm-api": "^1.0.2"
   },
   "devDependencies": {
     "pkg": "^4.3.0-beta.1",
