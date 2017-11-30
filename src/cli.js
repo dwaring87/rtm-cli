@@ -43,10 +43,10 @@ function setup() {
 
   // Add Options
   program
-    .option('--plain', 'do not use styled/colored text (overrides --color)')
-    .option('--color', 'force the use of styled/colored text')
+    .option('-p, --plain', 'do not use styled/colored text (overrides --color)')
+    .option('-c, --color', 'force the use of styled/colored text')
     .option('-s, --status', 'toggle the display of the status spinner')
-    .option('-c, --completed [value]', 'set display of completed tasks (true/false/number of days)')
+    .option('-x, --completed [value]', 'set display of completed tasks (true/false/number of days)')
     .option('-d, --hideDue [value]', 'hide tasks due more than n days from today (false/number of days)')
     .option('-f, --config [file]', 'specify configuration file', function(file) {
       config.reset(file);
