@@ -2,6 +2,7 @@
 
 const chalk = require('chalk');
 const spinner = require('ora')();
+const config = require('./config.js')
 
 /**
  * Log the specified text
@@ -82,7 +83,7 @@ log.spinner = {
    * @param {string} text The text to log
    */
   start: function(text) {
-    if ( !_plain() ) {
+    if ( !_plain() && _status() ) {
       spinner.start(text);
     }
   },
@@ -91,7 +92,7 @@ log.spinner = {
    * Stop and clear the spinner
    */
   stop: function() {
-    if ( !_plain() ) {
+    if ( !_plain() && _status() ) {
       spinner.stop();
     }
   },
@@ -101,11 +102,13 @@ log.spinner = {
    * @param {string} text The text to log
    */
   success: function(text) {
-    if ( !_plain() ) {
-      spinner.succeed(text);
-    }
-    else {
-      log("[ok] " + text);
+    if ( _status() ) {
+      if ( !_plain() ) {
+        spinner.succeed(text);
+      }
+      else {
+        log("[ok] " + text);
+      }
     }
   },
 
@@ -114,11 +117,13 @@ log.spinner = {
    * @param {string} text The text to log
    */
   error: function(text) {
-    if ( !_plain() ) {
-      spinner.fail(text);
-    }
-    else {
-      log("[error] " + text);
+    if ( _status() ) {
+      if ( !_plain() ) {
+        spinner.fail(text);
+      }
+      else {
+        log("[error] " + text);
+      }
     }
   }
 
@@ -131,7 +136,11 @@ log.spinner = {
  * @private
  */
 function _plain() {
-  return require('./config.js').get().plain;
+  return config.get().plain;
+}
+
+function _status() {
+  return config.get().status;
 }
 
 

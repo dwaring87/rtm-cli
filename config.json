@@ -8,6 +8,7 @@
   "completed": 7,
   "hideDue": false,
   "plain": false,
+  "status": true,
   "styles": {
     "list": "yellow.underline",
     "index": "dim",
