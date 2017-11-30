@@ -51,10 +51,6 @@ log.style = function(text, style, newline) {
     return log(text, newline);
   }
 
-  if ( style.indexOf('bg') > -1 ) {
-    text = ' ' + text + ' ';
-  }
-
   let nl = newline ? '\n' : '';
   let ch = chalk;
   let parts = style.split('.');

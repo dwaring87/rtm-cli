@@ -77,32 +77,35 @@ function action(args, env) {
         // ==== PRINT TASK INFORMATION ==== //
 
         // Print Task Index
-        log.style(_pad(task.index, MAX_INDEX) + ' ', styles.index);
+        log.style(_pad(task.index, MAX_INDEX), styles.index);
+        log.style(' ');
 
         // Print the Task Priority
         let priStyle = '';
-        let priText = '';
         if ( !task.completed ) {
           priStyle = styles.priority[task.priority.toString()];
           if ( task.priority === 0 ) {
-            priText += '    ';
+            log.style('    ');
           }
           else {
-            priText += '(' + task.priority + ') ';
+            log.style('(' + task.priority + ')', priStyle);
+            log.style(' ');
           }
         }
         else {
           priStyle = styles.completed;
-          priText = ' x  ';
+          log.style(' ');
+          log.style('x', priStyle);
+          log.style('  ');
         }
-        log.style(priText, priStyle);
 
         // Print the Task List Name
         let listStyle = task.isCompleted ? styles.completed : styles.list;
         log.style(task.list.name + ':', listStyle);
 
         // Print the Task Name
-        log.style(' ' + task.name, priStyle);
+        log.style(' ');
+        log.style(task.name, priStyle);
 
         // Print Note Indicators
         let notestyle = task.isCompleted ? styles.completed : styles.notes;
@@ -113,12 +116,16 @@ function action(args, env) {
         // Print Tags
         let tagstyle = task.isCompleted ? styles.completed : styles.tags;
         for ( let i = 0; i < task.tags.length; i++ ) {
-          log.style(' #' + task.tags[i], tagstyle);
+          log.style(' ');
+          log.style('#' + task.tags[i], tagstyle);
         }
 
-        // PrintCompleted Date
+        // Print Completed Date
         if ( task.completed ) {
-         log.style(' x ' + df(task.completed, config.get().dateformat), styles.completed);
+          log.style(' ');
+          log.style('x', styles.completed);
+          log.style(' ');
+          log.style(df(task.completed, config.get().dateformat), styles.completed);
         }
 
         // Finish line
