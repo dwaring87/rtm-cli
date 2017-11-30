@@ -41,13 +41,14 @@ The main usage of the program:
   Usage: rtm [options] <command> [command arguments]
 
 
-  Options:
+    Options:
 
       -V, --version            output the version number
-      --plain                  do not use styled/colored text (overrides --styled)
-      --styled                 use styled/colored text
+      -p, --plain              do not use styled/colored text (overrides --styled)
+      -s, --styled             use styled/colored text
       -c, --completed [value]  set display of completed tasks (true/false/number of days)
-      --config [file]          specify configuration file
+      -d, --hideDue [value]    hide tasks due more than n days from today (false/number of days)
+      -f, --config [file]      specify configuration file
       -h, --help               output usage information
 
 
@@ -93,7 +94,7 @@ Use the `quit` command to leave the interactive mode.
 ## Options
 
 
-### Plain Output: `--plain`
+### Plain Output: `--plain`, `-p`
 
 Display output text without any styling and/or colors.  This option overrides
 the default in the configuration files.
@@ -103,7 +104,7 @@ the default in the configuration files.
 **Default:** Display styled/colored output.
 
 
-### Styled Output: `--styled`
+### Styled Output: `--styled`, `-s`
 
 Display output text using special styling and/or colors.  This option overrides
 the default in the configuration files.
@@ -125,7 +126,20 @@ default in the configuration files.  Valid values include:
 **Default:** 7
 
 
-### Configuration File: `--config [file]`
+### Hide Tasks Due in Future: `--hideDue [value]`, `-d [value]`
+
+Hide tasks with due dates more than `value` days in the future.  This option
+overrides the default in the configuration files.  Valid values include:
+
+| Value | Description |
+| :---: | ----------- |
+| false | Do not hide any tasks based on due date |
+| n > 0 | Hide tasks with due dates more than `n` days from today |
+
+**Default:** false
+
+
+### Configuration File: `--config [file]`, `-f [file]`
 
 Specify a configuration file to use.  Properties in this file will override the
 default configuration properties.  RTM User information will be stored in this
@@ -520,22 +534,20 @@ Examples:
 
 ## Configuration
 
-RTM CLI has a number of properties that can be configured using a separate
-JSON file.  The default configuration file is located at `$HOME/.rtm.json` but
-can be changed using the `--config` option.
-
-RTM CLI will take any configuration properties found in the User's configuration
-file and override the default values.
+RTM CLI has a number of properties that can be configured using a separate JSON
+configuration file.  The default user configuration file is located at `$HOME/.rtm.json`
+but can be changed using the `--config` option.
 
 
 ### Default
 
-The default configuration file is as follows:
+The default configuration is as follows:
 
 ```json
 {
   "dateformat": "ddd mmm-dd",
   "completed": 7,
+  "hideDue": false,
   "plain": false,
   "styles": {
     "list": "yellow.underline",
@@ -646,6 +658,22 @@ The following is a list of all configuration properties, their descriptions, and
     </td>
     <td><code>7</code></td>
   </tr>
+  <tr>
+    <td><code>hideDue</code></td>
+    <td><code>boolean</code> or <code>integer</code></td>
+    <td>
+      <p><strong>Hide Tasks Due in Future</strong></p>
+      <p>This property can be configured to hide tasks that have a due
+      date set more than <code>n</code> days in the future.  Valid values for
+      this property include:</p>
+      <ul>
+        <li><code>false</code>: Do not hide any tasks based on due date</li>
+        <li><code>n > 0</code>: Hide tasks with a due date greater than <code>n</code>
+        days from today</li>
+      </ul>
+      <p>This can be overridden using the <code>--hideDue [value]</code> flag at the command line.</p>
+    </td>
+    <td><code>false</code></td>
   <tr>
     <td><code>plain</code></td>
     <td><code>boolean</code></td>
