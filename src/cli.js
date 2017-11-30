@@ -43,11 +43,11 @@ function setup() {
 
   // Add Options
   program
-    .option('--plain', 'do not use styled/colored text (overrides --styled)')
-    .option('--styled', 'use styled/colored text')
+    .option('-p, --plain', 'do not use styled/colored text (overrides --styled)')
+    .option('-s, --styled', 'use styled/colored text')
     .option('-c, --completed [value]', 'set display of completed tasks (true/false/number of days)')
     .option('-d, --hideDue [value]', 'hide tasks due more than n days from today (false/number of days)')
-    .option('--config [file]', 'specify configuration file', function(file) {
+    .option('-f, --config [file]', 'specify configuration file', function(file) {
       config.reset(file);
       parseFilters();
     });
