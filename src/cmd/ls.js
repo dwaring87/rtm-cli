@@ -6,7 +6,6 @@ const log = require('../utils/log.js');
 const finish = require('../utils/finish.js');
 const parseFilter = require('../utils/filter.js');
 const config = require('../utils/config.js');
-const styles = config.get().styles;
 
 
 /**
@@ -33,6 +32,9 @@ function action(args, env) {
         return finish();
       }
       log.spinner.stop();
+
+      // Get Display Styles
+      let styles = config.get().styles;
 
       // Get max task number
       tasks.sort(sort.tasks.index);

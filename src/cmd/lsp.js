@@ -35,6 +35,9 @@ function action(args, env) {
       }
       log.spinner.stop();
 
+      // Get Display Styles
+      let styles = config.get().styles;
+
       // Get max task number
       tasks.sort(sort.tasks.index);
       let MAX_INDEX = tasks[tasks.length-1].index;
