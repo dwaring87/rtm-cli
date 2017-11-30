@@ -155,9 +155,9 @@ class Config {
     if ( global._program ) {
 
       // Parse plain & styled flags
-      if ( global._program.styled ) {
+      if ( global._program.color ) {
         this._CONFIG.plain = false;
-        delete global._program.styled;
+        delete global._program.color;
       }
       if ( global._program.plain ) {
         this._CONFIG.plain = true;
