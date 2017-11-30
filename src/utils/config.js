@@ -164,7 +164,6 @@ class Config {
         delete global._program.plain;
       }
 
-
       // Parse completed
       let completed = global._program.completed === undefined ? this._CONFIG.completed : global._program.completed;
       if ( completed.toString().toLowerCase() === 'true' ) {

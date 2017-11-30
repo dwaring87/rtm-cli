@@ -520,4 +520,278 @@ Examples:
 
 ## Configuration
 
-More information about configuration is coming soon.
+RTM CLI has a number of properties that can be configured using a separate
+JSON file.  The default configuration file is located at `$HOME/.rtm.json` but
+can be changed using the `--config` option.
+
+RTM CLI will take any configuration properties found in the User's configuration
+file and override the default values.
+
+
+### Default
+
+The default configuration file is as follows:
+
+```json
+{
+  "dateformat": "ddd mmm-dd",
+  "completed": 7,
+  "plain": false,
+  "styles": {
+    "list": "yellow.underline",
+    "index": "dim",
+    "priority": {
+      "0": "reset",
+      "1": "red",
+      "2": "blue",
+      "3": "cyan"
+    },
+    "completed": "dim",
+    "notes": "reset",
+    "tags": "magenta",
+    "due": "green"
+  },
+  "filters": [
+    {
+      "name": "today",
+      "description": "Display prioritized tasks and tasks due or completed today",
+      "command": "lsp",
+      "filter": "(not priority:none and status:incomplete) or completed:today or (due:today and status:incomplete)"
+    }
+  ]
+}
+```
+
+
+### Properties
+
+The following is a list of all configuration properties, their descriptions, and default values.
+
+<table>
+  <tr>
+    <th>Property</th>
+    <th>Type</th>
+    <th>Description</th>
+    <th>Default</th>
+  </tr>
+  <tr>
+    <td><code>client</code></td>
+    <td><code>object</code></td>
+    <td colspan=2>
+      <p><strong>RTM API Client Information</strong></p>
+      <table>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+        <tr>
+          <td><code>key</code></td>
+          <td><code>string</code></td>
+          <td>RTM API Key</td>
+          <td><strong>RTM CLI</strong> API Key</td>
+        </tr>
+        <tr>
+          <td><code>secret</code></td>
+          <td><code>string</code></td>
+          <td>RTM API Secret</td>
+          <td><strong>RTM CLI</strong> API Secret</td>
+        </tr>
+        <tr>
+          <td><code>perms</code></td>
+          <td><code>string</code></td>
+          <td>
+            <p>RTM API Permissions</p>
+            <ul>
+              <li><code>read</code></li>
+              <li><code>write</code></li>
+              <li><code>delete</code></li>
+            </ul>
+          </td>
+          <td><code>delete</code></td>
+        </tr>
+      </table>
+      <p><strong>RTM CLI</strong> includes an RTM API client key/secret but
+        you can override these with your own, if you prefer.
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td><code>dateformat</code></td>
+    <td><code>string</code></td>
+    <td>
+      <p><strong>Date Display Format</strong></p>
+      <p>The format is parsed by the
+        <code>dateformat</code> node module.  Mask options are described in
+        that project's <a href='https://github.com/felixge/node-dateformat#mask-options'>README</a>.
+      </p>
+    </td>
+    <td><code>ddd mmm-dd</code></td>
+  </tr>
+  <tr>
+    <td><code>completed</code></td>
+    <td><code>boolean</code> or <code>integer</code></td>
+    <td>
+      <p><strong>Display Completed Tasks</strong></p>
+      <p>The display of completed tasks can be changed to include all, none
+        or some of the completed tasks with the following values:
+      </p>
+      <ul>
+        <li><code>true</code>: display all completed tasks</li>
+        <li><code>false</code>: don't display any completed tasks</li>
+        <li><code>n > 0</code>: display tasks completed within the last <code>n</code> days
+      </ul>
+      <p>This can be overridden using the <code>--completed [value]</code> flag at the command line.</p>
+    </td>
+    <td><code>7</code></td>
+  </tr>
+  <tr>
+    <td><code>plain</code></td>
+    <td><code>boolean</code></td>
+    <td>
+      <p><strong>Display Plain Text</strong></p>
+      <p>When set to <code>true</code>, output text will not be styled and/or colored.</p>
+      <p>This can be overridden using the <code>--plain</code> or <code>--styled</code> flags at the command line.</p>
+    </td>
+    <td><code>false</code></td>
+  </tr>
+  <tr>
+    <td><code>styles</code></td>
+    <td><code>object</code></td>
+    <td colspan=2>
+      <p><strong>Task Attribute Styles</strong></p>
+      <p>Different attributes of tasks can have different styles applied to them when displayed.</p>
+      <p>Styles are applied using the <code>chalk</code> npm module and can include the styles listed on
+       that project's <a href='https://github.com/chalk/chalk#styles'>README</a> and can be combined
+       using a <code>.</code>:</p>
+      <table>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+        <tr>
+          <td><code>list</code></td>
+          <td><code>string</code></td>
+          <td>List Name</td>
+          <td><code>yellow.underline</code></td>
+        </tr>
+        <tr>
+          <td><code>index</code></td>
+          <td><code>string</code></td>
+          <td>Index Number</td>
+          <td><code>dim</code></td>
+        </tr>
+        <tr>
+          <td><code>priority</code></td>
+          <td><code>object</code></td>
+          <td colspan=2>
+            <p>Task Priorities</p>
+            <table>
+              <tr>
+                <th>Property</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Default</th>
+              </tr>
+              <tr>
+                <td><code>0</code></td>
+                <td><code>string</code></td>
+                <td>No Priority</td>
+                <td><code>reset</code></td>
+              </tr>
+              <tr>
+                <td><code>1</code></td>
+                <td><code>string</code></td>
+                <td>Priority 1</td>
+                <td><code>red</code></td>
+              </tr>
+              <tr>
+                <td><code>2</code></td>
+                <td><code>string</code></td>
+                <td>Priority 2</td>
+                <td><code>blue</code></td>
+              </tr>
+              <tr>
+                <td><code>3</code></td>
+                <td><code>string</code></td>
+                <td>Priority 3</td>
+                <td><code>cyan</code></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td><code>completed</code></td>
+          <td><code>string</code></td>
+          <td>Completed Tasks</td>
+          <td><code>dim</code></td>
+        </tr>
+        <tr>
+          <td><code>notes</code></td>
+          <td><code>string</code></td>
+          <td>Notes Indicator</td>
+          <td><code>reset</code></td>
+        </tr>
+        <tr>
+          <td><code>tags</code></td>
+          <td><code>string</code></td>
+          <td>Tags</td>
+          <td><code>magenta</code></td>
+        </tr>
+        <tr>
+          <td><code>due</code></td>
+          <td><code>string</code></td>
+          <td>Due Dates</td>
+          <td><code>green</code></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td><code>filters</code></td>
+    <td><code>object[]</code></td>
+    <td colspan=2>
+      <p><strong>Pre-Defined Filters</strong></p>
+      <p>This configuration property allows you to define your own commands
+      that will display tasks using either the <code>ls</code>, <code>lsd</code>,
+      or <code>lsp</code> commands and a pre-set filter using RTM's advanced
+      search syntax.  The <code>today</code> command is already included in the
+      default configuration and can be used as an example.</p>
+      <table>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+        <tr>
+          <td><code>name</code></td>
+          <td><code>string</code></td>
+          <td>Command Name</td>
+          <td><code>today</code></td>
+        </tr>
+        <tr>
+          <td><code>description</code></td>
+          <td><code>string</code></td>
+          <td>Command Description - will be used in the help output</td>
+          <td>Display prioritized tasks and tasks due or completed today</td>
+        </tr>
+        <tr>
+          <td><code>command</code></td>
+          <td><code>string</code></td>
+          <td>Command - the command used to display the tasks.  Must be <code>ls</code>, <code>lsd</code>, or <code>lsp</code>.</td>
+          <td><code>lsp</code></td>
+        </tr>
+        <tr>
+          <td><code>filter</code></td>
+          <td><code>string</code></td>
+          <td>Filter - the RTM Advanced Search Syntax used to filter the tasks.</td>
+          <td>(not priority:none and status:incomplete) or completed:today or (due:today and status:incomplete)</td>
+        </tr>
+      <table>
+    </td>
+  </tr>
+</table>
