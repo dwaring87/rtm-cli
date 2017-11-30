@@ -44,9 +44,10 @@ The main usage of the program:
     Options:
 
       -V, --version            output the version number
-      -p, --plain              do not use styled/colored text (overrides --styled)
-      -s, --styled             use styled/colored text
-      -c, --completed [value]  set display of completed tasks (true/false/number of days)
+      -p, --plain              do not use styled/colored text (overrides --color)
+      -c, --color              force the use of styled/colored text
+      -s, --status             toggle the display of the status spinner
+      -x, --completed [value]  set display of completed tasks (true/false/number of days)
       -d, --hideDue [value]    hide tasks due more than n days from today (false/number of days)
       -f, --config [file]      specify configuration file
       -h, --help               output usage information
@@ -99,20 +100,32 @@ Use the `quit` command to leave the interactive mode.
 Display output text without any styling and/or colors.  This option overrides
 the default in the configuration files.
 
-**Note:** This option overrides `--styled`, if provided.
+**Note:** This option overrides `--color`, if provided, and will disable the
+status/spinner text.
 
 **Default:** Display styled/colored output.
 
 
-### Styled Output: `--styled`, `-s`
+### Styled Output: `--color`, `-c`
 
-Display output text using special styling and/or colors.  This option overrides
-the default in the configuration files.
+Force the display of output text using special styling and/or colors.  This
+option overrides the default in the configuration files.
 
 **Default:** Display styled/colored output.
 
 
-### Completed Tasks: `--completed [value]`, `-c [value]`
+### Status Text: `--status`, `-s`
+
+Toggle the display of the status/spinner text messages.  This option will
+toggle the default value in the configuration files.
+
+**Note:** When status messages are disabled, error messages will not be displayed
+and any errors encountered will be silently ignored.
+
+**Default:** Display status/spinner messages.
+
+
+### Completed Tasks: `--completed [value]`, `-x [value]`
 
 Specify how completed tasks should be displayed.  This option overrides the
 default in the configuration files.  Valid values include:
