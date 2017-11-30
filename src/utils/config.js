@@ -187,6 +187,12 @@ class Config {
       }
       this._CONFIG.hideDue = hideDue;
 
+      // Parse status
+      if ( global._program.status ) {
+        this._CONFIG.status = !this._CONFIG.status;
+        delete global._program.status;
+      }
+
     }
   }
 

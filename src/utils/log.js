@@ -2,7 +2,7 @@
 
 const chalk = require('chalk');
 const spinner = require('ora')();
-const config = require('./config.js')
+const config = require('./config.js');
 
 /**
  * Log the specified text

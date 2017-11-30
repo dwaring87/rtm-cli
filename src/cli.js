@@ -45,6 +45,7 @@ function setup() {
   program
     .option('-p, --plain', 'do not use styled/colored text (overrides --styled)')
     .option('-s, --styled', 'use styled/colored text')
+    .option('-s, --status', 'toggle the display of the status spinner')
     .option('-c, --completed [value]', 'set display of completed tasks (true/false/number of days)')
     .option('-d, --hideDue [value]', 'hide tasks due more than n days from today (false/number of days)')
     .option('-f, --config [file]', 'specify configuration file', function(file) {
