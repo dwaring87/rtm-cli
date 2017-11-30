@@ -177,6 +177,16 @@ class Config {
       }
       this._CONFIG.completed = completed;
 
+      // Parse hide due
+      let hideDue = global._program.hideDue === undefined ? this._CONFIG.hideDue : global._program.hideDue;
+      if ( hideDue.toString().toLowerCase() === 'false' ) {
+        hideDue = false;
+      }
+      else {
+        hideDue = parseInt(hideDue);
+      }
+      this._CONFIG.hideDue = hideDue;
+
     }
   }
 
