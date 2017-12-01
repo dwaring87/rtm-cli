@@ -36,6 +36,9 @@ start();
  */
 function setup() {
 
+  // Set Process Name
+  process.title = 'rtm';
+
   // Add Program Information
   program
     .version(info.version)
