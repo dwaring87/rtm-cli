@@ -5,6 +5,7 @@
     "perms": "delete"
   },
   "dateformat": "ddd mmm-dd",
+  "plannerDateformat": "ddd",
   "completed": 7,
   "hideDue": false,
   "plain": false,
