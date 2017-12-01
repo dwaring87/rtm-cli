@@ -8,6 +8,9 @@ const config = require('../utils/config.js');
  * @param filter
  */
 function filter(filter) {
+  if ( filter === undefined ) {
+    filter = '';
+  }
 
   // Filters
   let filters = [];
