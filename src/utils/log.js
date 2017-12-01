@@ -2,7 +2,7 @@
 
 const chalk = require('chalk');
 const spinner = require('ora')();
-const config = require('./config.js');
+
 
 /**
  * Log the specified text
@@ -136,11 +136,11 @@ log.spinner = {
  * @private
  */
 function _plain() {
-  return config.get().plain;
+  return require('./config.js').get().plain;
 }
 
 function _status() {
-  return config.get().status;
+  return require('./config.js').get().status;
 }
 
 
