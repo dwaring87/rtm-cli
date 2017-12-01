@@ -1,7 +1,5 @@
 'use strict';
 
-const log = require('./utils/log.js');
-
 
 /**
  * Display the Interactive Mode Prompt
@@ -53,6 +51,7 @@ function prompt() {
 
     // Unknown command
     else {
+      const log = require('./utils/log.js');
       log.spinner.error("Unknown Command");
       log.style("Commands: help," + commands.join(',') + ",quit", "dim", true);
       prompt();
