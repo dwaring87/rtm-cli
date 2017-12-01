@@ -47,6 +47,12 @@ function action(args, env) {
  */
 function _parseArgs(args) {
 
+  // Parse an Array as a filter
+  if ( Array.isArray(args[0]) ) {
+    args[1] = args[0];
+    args[0] = startArgs[0];
+  }
+
   // Initial state
   let start = undefined;
   let filter = '';
@@ -502,6 +508,6 @@ function _reset(text) {
 
 module.exports = {
   command: 'planner [start] [filter...]',
-  description: 'Display tasks in a weekly planner',
+  description: 'Display tasks in a weekly planner (start: sun, mon, today)',
   action: action
 };
