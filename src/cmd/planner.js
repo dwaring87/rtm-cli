@@ -11,7 +11,8 @@ const sort = require('../utils/sort.js');
 const finish = require('../utils/finish.js');
 
 // Possible Start Arguments
-const startArgs = ['sun', 'mon', 'today'];
+const START_ARGS = ['sun', 'mon', 'today'];
+const DEFAULT_START = START_ARGS[0];
 
 
 /**
@@ -20,79 +21,41 @@ const startArgs = ['sun', 'mon', 'today'];
  */
 function action(args, env) {
 
-  // Parse the arguments into a filter and start date
-  args = _parseArgs(args);
+  // Set filter and start arguments
+  let filter = parseFilter(args.length > 0 ? args[0].join(' ') : '');
+  let start = (env.start === undefined ? DEFAULT_START : env.start).toLowerCase();
 
-  // Get the User's Tasks
-  _getTasks(args.filter, function(tasks) {
-
-    // Display the Planner
-    _display(tasks, args.start);
-
-    // Display the Overdue and No Due Tasks
-    _displayExtra(tasks, args.start);
-
-    // Finish
-    finish();
-
-  });
-
-}
-
-/**
- * Parse the command args into the filter string and start Date
- * @param args command arguments
- * @returns {{filter: string, start: Date}}
- * @private
- */
-function _parseArgs(args) {
-
-  // Parse an Array as a filter
-  if ( Array.isArray(args[0]) ) {
-    args[1] = args[0];
-    args[0] = startArgs[0];
+  // Check start arg
+  if ( START_ARGS.indexOf(start) === -1 ) {
+    log.error("ERROR: start arg not valid: " + start);
+    log("Must be one of: " + START_ARGS);
+    return finish();
   }
 
-  // Initial state
-  let start = undefined;
-  let filter = '';
-
-  // Parse Args (start and filter)
-  if ( args.length === 0 ) {
-    start = startArgs[0];
-  }
-  else if ( startArgs.indexOf(args[0].toLowerCase()) > -1 ) {
-    start = args[0].toLowerCase();
-    if ( args.length > 1 ) {
-      filter = args[1].join(' ');
-    }
-  }
-  else {
-    start = startArgs[0];
-    if ( args.length === 1 ) {
-      filter = args[0];
-    }
-    else if ( args.length > 1 ) {
-      filter = args[0] + ' ' + args[1].join(' ');
-    }
-  }
-
-  // Determine start date
+  // Set start date
   let startDate = new Date();
-  if ( start.toLowerCase() === 'sun' ) {
+  if ( start === 'sun' ) {
     startDate.setDate(startDate.getDate() - startDate.getDay());
   }
-  else if ( start.toLowerCase() === 'mon' ) {
+  else if ( start === 'mon' ) {
     startDate.setDate(startDate.getDate() - startDate.getDay() + 1);
   }
   startDate.setHours(0, 0, 0, 0);
 
 
-  // Return the filter and start date
-  return {
-    filter: filter,
-    start: startDate
-  }
+  // Get the User's Tasks
+  _getTasks(filter, function(tasks) {
+
+    // Display the Planner
+    _display(tasks, startDate);
+
+    // Display the Overdue and No Due Tasks
+    _displayExtra(tasks, startDate);
+
+    // Finish
+    finish();
+
+  });
 
 }
 
@@ -272,12 +235,12 @@ function _displayExtra(tasks, start) {
   let headers = [];
   if ( overdue.length > 0 ) {
     headers.push(
-      _style("Overdue Tasks:", styles.due)
+      _style("Overdue Tasks", styles.due)
     );
   }
   if ( nodue.length > 0 ) {
     headers.push(
-      _style("No Due Date:", styles.due)
+      _style("No Due Date", styles.due)
     );
   }
 
@@ -507,7 +470,13 @@ function _reset(text) {
 
 
 module.exports = {
-  command: 'planner [start] [filter...]',
-  description: 'Display tasks in a weekly planner (start: sun, mon, today)',
+  command: 'planner [filter...]',
+  options: [
+    {
+      option: "-s, --start <start>",
+      description: "Planner start day (sun, mon, or today)"
+    }
+  ],
+  description: 'Display tasks in a weekly planner (--start: sun, mon, today)',
   action: action
 };
