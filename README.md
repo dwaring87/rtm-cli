@@ -70,7 +70,7 @@ The main usage of the program:
       lsd [filter...]                     List all tasks sorted first by due date then by priority
       lsp [filter...]                     List all tasks sorted first by priority then due date
       move|mv [index] [list...]           Move Task to a different List
-      planner [start] [filter...]         Display tasks in a weekly planner (start: sun, mon, today)
+      planner [options] [filter...]       Display tasks in a weekly planner (--start: sun, mon, today)
       postpone|pp [indices...]            Postpone one or more Tasks
       pri|p [index] [priority]            Change Task Priority
       remove|rm [indices...]              Remove one or more Tasks
@@ -81,7 +81,7 @@ The main usage of the program:
       tags|t                              Display all tags
       uncomp|unc [indices...]             Mark one or more Tasks as not complete
       whoami                              Display RTM user information
-      today                               Display prioritized tasks and tasks due or completed today
+      today                               Display tasks with a priority, due or completed today, or overdue
 ```
 
 
@@ -565,6 +565,38 @@ Examples:
 ```
 
 
+### Custom Commands:
+
+Custom meta-commands can be added to your configuration file's `aliases` property.
+This property is a list of aliased commands that reference an existing command
+and can provide pre-defined arguments.  This can be used to create a meta-command
+that uses one of the existing display commands (such as `ls`) and a pre-set
+filter string (using RTM's Advanced Search Syntax).
+
+The included `today` command is a meta-command added to the default configuration.
+
+To create your own meta command, add the `alias` property to your configuration file
+(located at `$HOME/.rtm.json` by default).  The example below creates the `overdue`
+command listing overdue tasks with the existing `lsp` command.
+
+```json
+{
+  "aliases": [
+    {
+      "name": "overdue",
+      "description": "Display all tasks that are overdue",
+      "command": "lsp",
+      "args": "dueBefore:today AND status:incomplete"
+    }
+  ]
+}
+```
+
+The `name` property gives the command name, `description` is the command description
+given in the help output, `command` is the existing command to map the new one to, and
+`args` provide the arguments (such as the filter string) to the command.
+
+
 ## Configuration
 
 RTM CLI has a number of properties that can be configured using a separate JSON
@@ -598,12 +630,12 @@ The default configuration is as follows:
     "tags": "magenta",
     "due": "green"
   },
-  "filters": [
+  "aliases": [
     {
       "name": "today",
       "description": "Display prioritized tasks and tasks due or completed today",
       "command": "lsp",
-      "filter": "(not priority:none and status:incomplete) or completed:today or (due:today and status:incomplete)"
+      "args": "(not priority:none and status:incomplete) or completed:today or (due:today and status:incomplete)"
     }
   ]
 }
@@ -837,15 +869,16 @@ The following is a list of all configuration properties, their descriptions, and
     </td>
   </tr>
   <tr>
-    <td><code>filters</code></td>
+    <td><code>aliases</code></td>
     <td><code>object[]</code></td>
     <td colspan=2>
-      <p><strong>Pre-Defined Filters</strong></p>
-      <p>This configuration property allows you to define your own commands
-      that will display tasks using either the <code>ls</code>, <code>lsd</code>,
-      or <code>lsp</code> commands and a pre-set filter using RTM's advanced
-      search syntax.  The <code>today</code> command is already included in the
-      default configuration and can be used as an example.</p>
+      <p><strong>Command Aliases</strong></p>
+      <p>This configuration property allows you to define your own meta-commands
+      that map a new command name to an existing command (such as <code>ls</code>,
+      <code>planner</code>, etc) with a pre-defined set of arguments (such as a
+      filter string using RTM's advanced search syntax).  The <code>today</code>
+      command is already included in the default configuration and can be used as
+      an example.</p>
       <table>
         <tr>
           <th>Property</th>
@@ -863,19 +896,19 @@ The following is a list of all configuration properties, their descriptions, and
           <td><code>description</code></td>
           <td><code>string</code></td>
           <td>Command Description - will be used in the help output</td>
-          <td>Display prioritized tasks and tasks due or completed today</td>
+          <td>Display tasks with a priority, due or completed today, or overdue</td>
         </tr>
         <tr>
           <td><code>command</code></td>
           <td><code>string</code></td>
-          <td>Command - the command used to display the tasks.  Must be <code>ls</code>, <code>lsd</code>, or <code>lsp</code>.</td>
+          <td>Command - the existing command to execute.</td>
           <td><code>lsp</code></td>
         </tr>
         <tr>
-          <td><code>filter</code></td>
+          <td><code>args</code></td>
           <td><code>string</code></td>
-          <td>Filter - the RTM Advanced Search Syntax used to filter the tasks.</td>
-          <td>(not priority:none and status:incomplete) or completed:today or (due:today and status:incomplete)</td>
+          <td>Options and arguments to pass to the specified command.</td>
+          <td>(not priority:none and status:incomplete) or completed:today or (dueBefore:tomorrow and status:incomplete)</td>
         </tr>
       <table>
     </td>
