@@ -420,10 +420,10 @@ Example:
 
 ### Weekly Planner: `planner`
 
-`planner` `[start]` `[filter]`
+`planner` `[--start <sun, mon, today>]` `[filter]`
 
-This command will display this week's Tasks in a weekly planner table.  The `start`
-argument can be one of: `sun`, `mon`, or `today` and will set the first day
+This command will display this week's Tasks in a weekly planner table.  The `--start`
+option can be one of: `sun`, `mon`, or `today` and will set the first day
 of the planner.  An optional `filter` can be used to filter the displayed tasks.
 Any incomplete tasks with a due date before the start of the planner and tasks
 without a set due date will be displayed below the planner.
@@ -431,7 +431,7 @@ without a set due date will be displayed below the planner.
 Examples:
 ```
 > planner
-> planner mon NOT due:never   # Hide tasks with no due date set
+> planner --start mon NOT due:never   # Hide tasks with no due date set
 ```
 
 ![](https://raw.githubusercontent.com/dwaring87/rtm-cli/master/screens/planner.png)
