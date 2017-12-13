@@ -226,6 +226,13 @@ function parseFilters() {
             args.push(filter.filter);
           }
 
+          // Add CLI arguments
+          if ( process.argv.length > 3 ) {
+            for ( let j = 3; j < process.argv.length; j++ ) {
+              args.push(process.argv[j]);
+            }
+          }
+
           // Parse the command
           global._program.parse(args);
 
