@@ -76,8 +76,8 @@ function setup() {
   // Add Program Commands
   parseCommands();
 
-  // Parse Filters
-  parseFilters();
+  // Parse Aliases
+  parseAliases();
 
   // Set program to global namespace
   global._program = program;
@@ -180,18 +180,18 @@ function parseCmd(file) {
 
 
 /**
- * Parse the Filter Commands from the Config Files
+ * Parse the Alias Commands from the Config Files
  */
-function parseFilters() {
-  if ( config.get().filters ) {
-    for ( let i = 0; i < config.get().filters.length; i++ ) {
-      let filter = config.get().filters[i];
+function parseAliases() {
+  if ( config.get().aliases ) {
+    for ( let i = 0; i < config.get().aliases.length; i++ ) {
+      let alias = config.get().aliases[i];
 
       // Check for existing command name
       let found = false;
       let existing = program.commands;
       for ( let j = 0; j < existing.length; j++ ) {
-        if ( existing[j].name() === filter.name ) {
+        if ( existing[j].name() === alias.name ) {
           found = true;
         }
       }
@@ -200,22 +200,36 @@ function parseFilters() {
       if ( !found ) {
 
         // Create Command with description
-        let cmd = program.command(filter.name);
-        cmd.description(filter.description);
+        let cmd = program.command(alias.name);
+        cmd.description(alias.description);
 
         // Set Command Action
         cmd.action(function () {
 
-          // Find Command File
-          let run = require('./cmd/' + filter.command + '.js');
+          // Set Initial Args
+          let args = [
+            process.argv[0],
+            process.argv[1],
+            alias.command
+          ];
 
-          // Check Login Before Running Command
-          config.user(function () {
+          // Add Arguments
+          if ( alias.args ) {
+            alias.args = alias.args.split(' ');
+            for ( let j = 0; j < alias.args.length; j++ ) {
+              args.push(alias.args[j]);
+            }
+          }
 
-            // Run Command With Filter
-            run.action([[filter.filter]]);
+          // Add CLI arguments
+          if ( process.argv.length > 3 ) {
+            for ( let j = 3; j < process.argv.length; j++ ) {
+              args.push(process.argv[j]);
+            }
+          }
 
-          });
+          // Parse the command
+          global._program.parse(args);
 
         });
         

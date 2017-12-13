@@ -24,12 +24,12 @@
     "tags": "magenta",
     "due": "green"
   },
-  "filters": [
+  "aliases": [
     {
       "name": "today",
-      "description": "Display prioritized tasks and tasks due or completed today",
+      "description": "Display tasks with a priority, due or completed today, or overdue",
       "command": "lsp",
-      "filter": "(not priority:none and status:incomplete) or completed:today or (due:today and status:incomplete)"
+      "args": "(not priority:none and status:incomplete) or completed:today or (dueBefore:tomorrow and status:incomplete)"
     }
   ]
 }
