@@ -206,16 +206,28 @@ function parseFilters() {
         // Set Command Action
         cmd.action(function () {
 
-          // Find Command File
-          let run = require('./cmd/' + filter.command + '.js');
+          // Set Initial Args
+          let args = [
+            process.argv[0],
+            process.argv[1],
+            filter.command
+          ];
 
-          // Check Login Before Running Command
-          config.user(function () {
+          // Add options
+          if ( filter.options ) {
+            let opts = filter.options.split(' ');
+            for ( let i = 0; i < opts.length; i++ ) {
+              args.push(opts[i]);
+            }
+          }
 
-            // Run Command With Filter
-            run.action([[filter.filter]]);
+          // Add filter
+          if ( filter.filter ) {
+            args.push(filter.filter);
+          }
 
-          });
+          // Parse the command
+          global._program.parse(args);
 
         });
         
