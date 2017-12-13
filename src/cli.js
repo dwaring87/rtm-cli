@@ -53,7 +53,7 @@ function setup() {
     .option('-d, --hideDue [value]', 'hide tasks due more than n days from today (false/number of days)')
     .option('-f, --config [file]', 'specify configuration file', function(file) {
       config.reset(file);
-      parseFilters();
+      parseAliases();
     });
 
   // Add additional Help information
