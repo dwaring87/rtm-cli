@@ -583,6 +583,7 @@ The default configuration is as follows:
   "completed": 7,
   "hideDue": false,
   "plain": false,
+  "status": true,
   "styles": {
     "list": "yellow.underline",
     "index": "dim",
@@ -727,10 +728,20 @@ The following is a list of all configuration properties, their descriptions, and
     <td>
       <p><strong>Display Plain Text</strong></p>
       <p>When set to <code>true</code>, output text will not be styled and/or colored.</p>
-      <p>This can be overridden using the <code>--plain</code> or <code>--styled</code> flags at the command line.</p>
+      <p>This can be overridden using the <code>--plain</code> or <code>--color</code> flags at the command line.</p>
     </td>
     <td><code>false</code></td>
   </tr>
+  <tr>
+      <td><code>status</code></td>
+      <td><code>boolean</code></td>
+      <td>
+        <p><strong>Display Status Text</strong></p>
+        <p>When set to <code>true</code>, the status/spinner messages (such as 'Getting Tasks...') will be displayed.</p>
+        <p>This can be overridden using the <code>--status</code> flag at the command line.</p>
+      </td>
+      <td><code>true</code></td>
+    </tr>
   <tr>
     <td><code>styles</code></td>
     <td><code>object</code></td>
