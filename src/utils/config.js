@@ -17,6 +17,7 @@ const BASE_CONFIG = path.normalize(__dirname + '/../../config.json');
  * Default User Configuration
  */
 let DEFAULT_USER_CONFIG = path.normalize(os.homedir() + '/.rtm.json');
+let DEFAULT_ALIAS_CONFIG = path.normalize(os.homedir() + '/.rtm.aliases.json');
 
 
 /**
@@ -30,6 +31,7 @@ class Config {
    */
   constructor() {
     this.reset(DEFAULT_USER_CONFIG);
+    this.read(DEFAULT_ALIAS_CONFIG);
   }
 
   /**
