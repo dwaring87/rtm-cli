@@ -159,7 +159,7 @@ Specify a configuration file to use.  Properties in this file will override the
 default configuration properties.  RTM User information will be stored in this
 file.
 
-**Default:** `$HOME/.rtm.json`
+**Default:** `$HOME/.rtm.json` and `$HOME/.rtm.config.json`
 
 
 ### Version Information: `--version`, `-v`
@@ -602,6 +602,10 @@ given in the help output, `command` is the existing command to map the new one t
 RTM CLI has a number of properties that can be configured using a separate JSON
 configuration file.  The default user configuration file is located at `$HOME/.rtm.json`
 but can be changed using the `--config` option.
+
+For convenience, if you want to separate the storage of your account credentials
+and the RTM configuration properties, the `$HOME/.rtm.config.json` file will
+be read and parsed in addition to the `$HOME/.rtm.json` file, if present.
 
 
 ### Default
