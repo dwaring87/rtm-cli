@@ -26,6 +26,8 @@ npm install -g rtm-cli
 
 which will install the executable `rtm` into your `$PATH`.
 
+**Note:** `rtm-cli` requires node version >= 7.5.0
+
 ### Executable Releases
 
 Standalone executables, that do not require a pre-existing installation of Node,
