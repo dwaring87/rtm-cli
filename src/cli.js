@@ -183,9 +183,23 @@ function parseCmd(file) {
  * Parse the Alias Commands from the Config Files
  */
 function parseAliases() {
+
+  // Remove existing RTM Aliases
+  let keep = [];
+  let current = program.commands;
+  for ( let i = 0; i < current.length; i++ ) {
+    let cmd = current[i];
+    if ( !cmd._isRTMAlias ) {
+      keep.push(cmd);
+    }
+  }
+  program.commands = keep;
+
+  // Parse aliases in configuration
   if ( config.get().aliases ) {
     for ( let i = 0; i < config.get().aliases.length; i++ ) {
       let alias = config.get().aliases[i];
+      console.log(alias);
 
       // Check for existing command name
       let found = false;
@@ -232,10 +246,14 @@ function parseAliases() {
           global._program.parse(args);
 
         });
-        
+
+        // Flag command as RTM Alias
+        cmd._isRTMAlias = true;
+
       }
     }
   }
+
 }
 
 
