@@ -81,7 +81,8 @@ class Config {
    * Get the RTMUser from the configuration
    *
    * If no RTMUser is saved, start the login process
-   * @returns {RTMUser}
+   * @param {function} callback callback function
+   * @param {RTMUser} callback.user The RTM User
    */
   user(callback) {
     if ( !this._CONFIG._user ) {
