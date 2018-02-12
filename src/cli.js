@@ -106,6 +106,9 @@ function setup() {
   // Catch Thrown Errors
   process.on('uncaughtException', function(err) {
     log.error("ERROR: " + err);
+    if ( program.verbose ) {
+      console.log(err);
+    }
     finish();
   });
 
