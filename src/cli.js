@@ -54,7 +54,8 @@ function setup() {
     .option('-f, --config [file]', 'specify configuration file', function(file) {
       config.reset(file);
       parseAliases();
-    });
+    })
+    .option('-v, --verbose', 'print stack traces on errors');
 
   // Add additional Help information
   program.on('--help', function() {
