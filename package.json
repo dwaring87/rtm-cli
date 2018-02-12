@@ -15,7 +15,7 @@
   "bin": {
     "rtm": "src/cli.js"
   },
-  "main": "src/cli.js",
+  "main": "src/utils/index.js",
   "scripts": {
     "postversion": "npm run build",
     "build": "node build.js"
