@@ -232,9 +232,9 @@ function parseAliases() {
 
           // Add Arguments
           if ( alias.args ) {
-            alias.args = alias.args.split(' ');
-            for ( let j = 0; j < alias.args.length; j++ ) {
-              args.push(alias.args[j]);
+            let aa = alias.args.split(' ');
+            for ( let j = 0; j < aa.length; j++ ) {
+              args.push(aa[j]);
             }
           }
 
