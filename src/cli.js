@@ -54,7 +54,8 @@ function setup() {
     .option('-f, --config [file]', 'specify configuration file', function(file) {
       config.reset(file);
       parseAliases();
-    });
+    })
+    .option('-v, --verbose', 'print stack traces on errors');
 
   // Add additional Help information
   program.on('--help', function() {
@@ -105,6 +106,9 @@ function setup() {
   // Catch Thrown Errors
   process.on('uncaughtException', function(err) {
     log.error("ERROR: " + err);
+    if ( program.verbose ) {
+      console.log(err);
+    }
     finish();
   });
 
@@ -228,9 +232,9 @@ function parseAliases() {
 
           // Add Arguments
           if ( alias.args ) {
-            alias.args = alias.args.split(' ');
-            for ( let j = 0; j < alias.args.length; j++ ) {
-              args.push(alias.args[j]);
+            let aa = alias.args.split(' ');
+            for ( let j = 0; j < aa.length; j++ ) {
+              args.push(aa[j]);
             }
           }
 
