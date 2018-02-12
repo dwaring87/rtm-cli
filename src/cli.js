@@ -199,7 +199,6 @@ function parseAliases() {
   if ( config.get().aliases ) {
     for ( let i = 0; i < config.get().aliases.length; i++ ) {
       let alias = config.get().aliases[i];
-      console.log(alias);
 
       // Check for existing command name
       let found = false;
