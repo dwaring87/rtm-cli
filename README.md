@@ -99,7 +99,7 @@ Use the `quit` command to leave the interactive mode.
 ### Full Usage Information
 
 For full documentation on the usage of the built-in commands and options,
-see the [Project Wiki](https://github.com/dwaring87/rtm-cli/wiki#usage)
+see the [Command Reference](https://github.com/dwaring87/rtm-cli/wiki/Command-Reference).
 
 
 ## Configuration
@@ -121,7 +121,7 @@ Currently, the configuration can customize:
 
 
 For full documentation on the configuration properties, see the
-[Project Wiki](https://github.com/dwaring87/rtm-cli/wiki#usage).
+[Configuration Reference](https://github.com/dwaring87/rtm-cli/wiki/Configuration-Reference).
 
 
 ## Plugins
@@ -129,7 +129,7 @@ For full documentation on the configuration properties, see the
 RTM CLI supports adding additional commands through plugins.
 
 For information on installing plugins, see the
-[Project Wiki](https://github.com/dwaring87/rtm-cli/wiki#installing-plugins).
+[Plugin Reference](https://github.com/dwaring87/rtm-cli/wiki/Plugin-Reference).
 
 For information on creating commands, see the **Creating Commands** section
 in the [Project Wiki](https://github.com/dwaring87/rtm-cli/wiki#creating-commands).
