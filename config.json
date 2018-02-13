@@ -31,5 +31,8 @@
       "command": "lsp",
       "args": "(not priority:none and status:incomplete) or completed:today or (dueBefore:tomorrow and status:incomplete)"
     }
+  ],
+  "plugins": [
+    "{{HOME}}/.rtm.plugins/"
   ]
 }
