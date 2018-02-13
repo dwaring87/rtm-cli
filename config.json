@@ -26,10 +26,10 @@
   },
   "aliases": [
     {
-      "name": "today",
-      "description": "Display tasks with a priority, due or completed today, or overdue",
-      "command": "lsp",
-      "args": "(not priority:none and status:incomplete) or completed:today or (dueBefore:tomorrow and status:incomplete)"
+      "name": "overdue",
+      "description": "Display incomplete tasks that are overdue",
+      "command": "lsd",
+      "args": "dueBefore:today AND status:incomplete"
     }
   ],
   "plugins": [
