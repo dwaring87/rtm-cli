@@ -134,6 +134,14 @@ function parseCommands() {
  */
 function parseCmd(file) {
   let opts = require(file);
+  // Check for existing command name
+  let existing = program.commands;
+  for ( let i = 0; i < existing.length; i++ ) {
+    if ( existing[i].name() === command.command.split(' ')[0] ) {
+      log.error("ERROR: Command name (" + command.command.split(' ')[0] + ") already exists");
+      process.exit(1);
+    }
+  }
 
   // Build Command
   let cmd = program.command(opts.command);
