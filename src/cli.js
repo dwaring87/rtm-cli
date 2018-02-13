@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
+const os = require('os');
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
@@ -53,6 +54,7 @@ function setup() {
     .option('-d, --hideDue [value]', 'hide tasks due more than n days from today (false/number of days)')
     .option('-f, --config [file]', 'specify configuration file', function(file) {
       config.reset(file);
+      parsePlugins();
       parseAliases();
     })
     .option('-v, --verbose', 'print stack traces on errors');
@@ -76,6 +78,9 @@ function setup() {
 
   // Add Program Commands
   parseCommands();
+
+  // Add Any Plugins
+  parsePlugins();
 
   // Parse Aliases
   parseAliases();
@@ -115,6 +120,10 @@ function setup() {
 }
 
 
+
+// ===== COMMAND PARSING ===== //
+
+
 /**
  * Parse the commands in the command directory
  * @private
@@ -122,18 +131,20 @@ function setup() {
 function parseCommands() {
   let files = fs.readdirSync(CMD_DIR);
   for ( let i = 0; i < files.length; i++ ) {
-    parseCmd(path.normalize(CMD_DIR + '/' + files[i]));
+    let file = path.normalize(CMD_DIR + '/' + files[i]);
+    let command = require(file);
+    parseCmd(command);
   }
 }
 
 
 /**
  * Parse the command file
- * @param {string} file Path to command file
+ * @param {object} command The command object to parse
  * @private
  */
-function parseCmd(file) {
-  let opts = require(file);
+function parseCmd(command) {
+
   // Check for existing command name
   let existing = program.commands;
   for ( let i = 0; i < existing.length; i++ ) {
@@ -144,14 +155,14 @@ function parseCmd(file) {
   }
 
   // Build Command
-  let cmd = program.command(opts.command);
-  cmd.description(opts.description);
-  cmd.alias(opts.alias);
+  let cmd = program.command(command.command);
+  cmd.description(command.description);
+  cmd.alias(command.alias);
 
   // Add Command Options
-  if ( opts.options ) {
-    for ( let i = 0; i < opts.options.length; i++ ) {
-      let option = opts.options[i];
+  if ( command.options ) {
+    for ( let i = 0; i < command.options.length; i++ ) {
+      let option = command.options[i];
       cmd.option(option.option, option.description);
     }
   }
@@ -176,19 +187,132 @@ function parseCmd(file) {
     }
 
     // Skip Login Check
-    if ( opts.disableLogin ) {
-      opts.action(args, env);
+    if ( command.disableLogin ) {
+      command.action(args, env);
     }
 
     // Check Login Before Running Command
     else {
       config.user(function() {
-        opts.action(args, env);
+        command.action(args, env);
       });
     }
 
   });
 }
+
+
+
+// ===== PLUGIN PARSING ===== //
+
+
+/**
+ * Parse the plugins listed in the configuration
+ */
+function parsePlugins() {
+
+  // Get plugin locations from the configuration
+  let locations = config.get().plugins;
+
+  // Parse each location
+  for ( let i = 0; i < locations.length; i++ ) {
+    parsePluginLocation(locations[i]);
+  }
+
+}
+
+
+/**
+ * Parse the specified plugin location
+ * @param {string} location Plugin location (file, directory or module name)
+ * @private
+ */
+function parsePluginLocation(location) {
+
+  // Replace {{HOME}} with home directory location
+  location = location.replace("{{HOME}}", os.homedir());
+
+  // Try to load as a module (either directory or file)
+  try {
+    require.resolve(location);
+    parsePluginModule(location);
+  }
+
+  // Not a module...
+  catch (err) {
+
+    // Check to make sure file/directory exists
+    if ( fs.existsSync(location) ) {
+
+      // Check if a directory
+      if ( fs.lstatSync(location).isDirectory() ) {
+        parsePluginDirectory(location);
+      }
+
+    }
+
+  }
+
+}
+
+/**
+ * Parse the Plugin as a Module
+ * @param {string} location Module location (for `require`)
+ * @private
+ */
+function parsePluginModule(location) {
+
+  // Load the module
+  let module = require(location);
+
+  // Check the root module for a command
+  _check(module);
+
+  // Check children objects for a command
+  for ( let key in module ) {
+    if ( module.hasOwnProperty(key) ) {
+      _check(module[key]);
+    }
+  }
+
+  /**
+   * Check the object for the required command properties and parse the
+   * object as a command if they are all found
+   * @param obj
+   * @private
+   */
+  function _check(obj) {
+    if ( obj.hasOwnProperty('command') && obj.hasOwnProperty('description') && obj.hasOwnProperty('action') ) {
+      parseCmd(obj);
+    }
+  }
+
+}
+
+/**
+ * Process a plugin directory
+ * @param location
+ */
+function parsePluginDirectory(location) {
+
+  // Check if location exists
+  if ( fs.existsSync(location) ) {
+
+    // Get all files in directory
+    let files = fs.readdirSync(location);
+
+    // Parse each location
+    for ( let i = 0; i < files.length; i++ ) {
+      parsePluginLocation(path.normalize(location + '/' + files[i]));
+    }
+
+  }
+
+}
+
+
+
+// ===== ALIAS PARSING ===== //
 
 
 /**
@@ -266,6 +390,11 @@ function parseAliases() {
   }
 
 }
+
+
+
+
+// ===== START FUNCTIONS ===== //
 
 
 /**
