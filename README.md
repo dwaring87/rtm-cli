@@ -61,6 +61,7 @@ The main usage of the program:
       add|a [task...]                     Add a new Task
       addList|al [name] [filter...]       Add a new List or Smart List
       addTags|at [index] [tags...]        Add one or more tags to a Task
+      archiveList|arl [name...]           Archive a List
       comp|x [indices...]                 Complete one or more Tasks
       decPri|- [indices...]               Decrease the Priority of one or more Tasks
       due [index] [due...]                Set the Due Date of a Task
