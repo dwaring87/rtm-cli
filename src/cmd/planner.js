@@ -359,7 +359,7 @@ function _displayTasks(tasks) {
  */
 function _calcWidths(colMinWidths, colMaxWidths) {
 
-  // Total Width Available
+  // Total Width Available (if running via cron change to: 'let widthTotal = 80' or however wide you want)
   let widthTotal = ws.width - 8;
 
   // Requested Total Width
