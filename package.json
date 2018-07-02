@@ -42,8 +42,8 @@
     "window-size": "^1.1.0"
   },
   "devDependencies": {
-    "pkg": "^4.3.0-beta.1",
-    "archiver": "^2.1.0"
+    "archiver": "^2.1.0",
+    "pkg": "^4.3.3"
   },
   "pkg": {
     "scripts": [
