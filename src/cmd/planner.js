@@ -13,6 +13,7 @@ const finish = require('../utils/finish.js');
 // Possible Start Arguments
 const START_ARGS = ['sun', 'mon', 'today'];
 const DEFAULT_START = START_ARGS[0];
+const DEFAULT_WIDTH = 80;
 
 
 /**
@@ -24,6 +25,7 @@ function action(args, env) {
   // Set filter and start arguments
   let filter = parseFilter(args.length > 0 ? args[0].join(' ') : '');
   let start = (env.start === undefined ? DEFAULT_START : env.start).toLowerCase();
+  let fixedWidth = (env.width === undefined ? undefined : parseInt(env.width));
 
   // Check start arg
   if ( START_ARGS.indexOf(start) === -1 ) {
@@ -47,10 +49,10 @@ function action(args, env) {
   _getTasks(filter, function(tasks) {
 
     // Display the Planner
-    _display(tasks, startDate);
+    _display(tasks, startDate, fixedWidth);
 
     // Display the Overdue and No Due Tasks
-    _displayExtra(tasks, startDate);
+    _displayExtra(tasks, startDate, fixedWidth);
 
     // Finish
     finish();
@@ -97,9 +99,10 @@ function _getTasks(filter, callback) {
  * start date
  * @param tasks User's Tasks
  * @param start Start Date
+ * @param fixedWidth Fixed planner width, if provided
  * @private
  */
-function _display(tasks, start) {
+function _display(tasks, start, fixedWidth) {
 
   // Header Titles
   let headers = [];
@@ -191,7 +194,7 @@ function _display(tasks, start) {
   // ==== BUILD TABLE ==== //
 
   let table = new Table({
-    colWidths: _calcWidths(colMinWidths, colMaxWidths),
+    colWidths: _calcWidths(colMinWidths, colMaxWidths, fixedWidth),
     wordWrap: false,
     head: headers,
     style: {
@@ -211,9 +214,10 @@ function _display(tasks, start) {
  * of the planner and tasks with no due date
  * @param tasks User Tasks
  * @param start Planner Start Date
+ * @param fixedWidth Fixed planner width, if provided
  * @private
  */
-function _displayExtra(tasks, start) {
+function _displayExtra(tasks, start, fixedWidth) {
 
   // Display Styles
   let styles = config.get().styles;
@@ -267,10 +271,19 @@ function _displayExtra(tasks, start) {
     );
   }
 
+  // Set column widths
+  let colWidths = [];
+  if ( fixedWidth !== undefined ) {
+    for ( let i = 0; i < headers.length; i++ ) {
+      colWidths[i] = Math.floor((fixedWidth/headers.length)-(headers.length-1));
+    }
+  }
+
   // Build Extra Table
   let table = new Table({
     head: headers,
-    style: { head: [] }
+    style: { head: [] },
+    colWidths: colWidths
   });
   table.push(data);
 
@@ -354,13 +367,24 @@ function _displayTasks(tasks) {
  *  and the width of the console.
  * @param colMinWidths array of min widths
  * @param colMaxWidths array of max widths
+ * @param fixedWidth fixed planner display width
  * @returns {Array} array of final widths
  * @private
  */
-function _calcWidths(colMinWidths, colMaxWidths) {
+function _calcWidths(colMinWidths, colMaxWidths, fixedWidth) {
 
   // Total Width Available
-  let widthTotal = ws.width - 8;
+  let width = DEFAULT_WIDTH;
+  if ( fixedWidth !== undefined ) {
+    width = fixedWidth;
+  }
+  else {
+    try {
+      width = ws.width;
+    }
+    catch (exception) {}
+  }
+  let widthTotal = width - 8;
 
   // Requested Total Width
   let widthRequested = 0;
@@ -475,6 +499,10 @@ module.exports = {
     {
       option: "-s, --start <start>",
       description: "Planner start day (sun, mon, or today)"
+    },
+    {
+      option: "-w, --width <cols>",
+      description: "Set fixed planner display width (in number of columns)"
     }
   ],
   description: 'Display tasks in a weekly planner (--start: sun, mon, today)',
