@@ -129,6 +129,11 @@ For full documentation on the configuration properties, see the
 
 RTM CLI supports adding additional commands through plugins.
 
+**Available Plugins:**
+
+  - Export - [rtm-plugin-export](https://github.com/dwaring87/rtm-plugin-export)
+    - Provides an `export` command to export tasks to a CSV file
+
 For information on installing plugins, see the
 [Plugin Reference](https://github.com/dwaring87/rtm-cli/wiki/Plugin-Reference).
 
