@@ -1,7 +1,7 @@
 'use strict';
 
 const df = require('dateformat');
-const Table = require('cli-table2');
+const Table = require('cli-table3');
 const ws = require('window-size');
 const chalk = require('chalk');
 const parseFilter = require('../utils/filter.js');
