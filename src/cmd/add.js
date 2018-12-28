@@ -82,10 +82,10 @@ function _processFinished(count, max) {
  * @private
  */
 function _parseTask(task) {
-  task = task.replace(/p:/g, "!");
-  task = task.replace(/l:/g, "#");
-  task = task.replace(/t:/g, "#");
-  task = task.replace(/due:/g, "^");
+  task = task.replace(/(\s+)p:([0-4]{1})($|[\s\r\n]+)/, " !$2$3").trim();
+  task = task.replace(/(\s+)l:([\w\d]+)/, " #$2").trim();
+  task = task.replace(/(\s+)t:([\w\d]+)/g, " #$2").trim();
+  task = task.replace(/(\s+)due:([\w\d]+)/, " ^$2").trim();
   return task;
 }
 
