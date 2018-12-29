@@ -4,9 +4,11 @@ const log = require('../utils/log.js');
 const config = require('../utils/config.js');
 const prompt = require('../utils/prompt.js');
 const finish = require('../utils/finish.js');
+const opn = require('opn');
 
 
 let URLS = [];
+let OPEN = false;
 
 
 /**
@@ -18,6 +20,9 @@ function action(args, env) {
 
   // Reset URLs
   URLS = [];
+
+  // Set Open flag
+  OPEN = env.open === undefined ? false : env.open;
 
   // Prompt for task
   if ( args.length < 1 ) {
@@ -90,21 +95,46 @@ function _process(index, count=1, max=1) {
  */
 function _processFinished(count, max) {
   log.spinner.start("Getting Task [" + count + "/" + max + "]...");
+
+  // All tasks returned...
   if ( count === max ) {
     log.spinner.stop();
 
     // Print URLs
     for ( let i = 0; i < URLS.length; i++ ) {
-      console.log("[" + URLS[i].index + "] " + URLS[i].url)
+      console.log("[" + URLS[i].index + "] " + URLS[i].url);
     }
 
-    return finish();
+    // Open URL
+    if ( OPEN ) {
+      for ( let i = 0; i < URLS.length; i++ ) {
+        opn(URLS[i].url, {wait: false}).then(function() {
+          _finish(i, URLS.length);
+        });
+      }
+    }
+    else {
+      return finish();
+    }
   }
+
+  function _finish(count, max) {
+    if ( count === max-1 ) {
+      return finish();
+    }
+  }
+
 }
 
 
 module.exports = {
   command: 'url [index...]',
+  options: [
+    {
+      option: "-o, --open",
+      description: "Open the URLs in a browser"
+    }
+  ],
   description: 'Display the associated URL of a Task',
   action: action
 };
