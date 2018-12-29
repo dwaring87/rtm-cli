@@ -76,6 +76,12 @@ function setup() {
     }
   });
 
+  // Error on Unknown Command
+  program.on('command:*', function () {
+    console.error('Invalid command: %s\nSee --help for a list of available commands.', program.args.join(' '));
+    process.exit(1);
+  });
+
   // Add Program Commands
   parseCommands();
 
@@ -403,22 +409,16 @@ function parseAliases() {
  */
 function start() {
 
-  // Parse the process arguments
-  program.parse(process.argv);
-
-  // Get parsed command
-  let command = global._program.args[global._program.args.length-1];
-
-  // Start interactive mode if no command
-  if ( command === undefined ) {
+  // Start interactive mode
+  if ( process.argv.length <= 2 ) {
     startInteractive();
   }
 
-  // Unknown Command
-  else if ( typeof command === 'string' ) {
-    log.spinner.error('ERROR: Unknown Command');
-    program.help();
+  // Parse the process arguments
+  else {
+    program.parse(process.argv);
   }
+
 
 }
 
