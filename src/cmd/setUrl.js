@@ -4,7 +4,6 @@ const log = require('../utils/log.js');
 const config = require('../utils/config.js');
 const prompt = require('../utils/prompt.js');
 const finish = require('../utils/finish.js');
-const opn = require('opn');
 
 
 /**
