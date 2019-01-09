@@ -128,7 +128,7 @@ function _processFinished(count, max) {
 
 
 module.exports = {
-  command: 'url [index...]',
+  command: 'url [indices...]',
   options: [
     {
       option: "-o, --open",
