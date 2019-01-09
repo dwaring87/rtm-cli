@@ -94,6 +94,12 @@ function action(args, env) {
         // Add the Task Name
         log.style(task.name, namestyle);
 
+        // Print URL Indicator
+        let urlstyle = task.isCompleted ? styles.completed : styles.url;
+        if ( task.url !== undefined ) {
+          log.style('+', urlstyle);
+        }
+
         // Print Note Indicators
         let notestyle = task.isCompleted ? styles.completed : styles.notes;
         for ( let i = 0; i < task.notes.length; i++ ) {

@@ -2,6 +2,7 @@
 
 const log = require('../utils/log.js');
 const config = require('../utils/config.js');
+const parseFilter = require('../utils/filter.js');
 const finish = require('../utils/finish.js');
 
 
@@ -14,7 +15,7 @@ function action(args, env) {
     log.spinner.start("Clearing Task Index Cache...");
     user.clearTaskIndexCache();
     log.spinner.start("Rebuilding Task Index Cache...");
-    user.tasks.get(function(err) {
+    user.tasks.get(parseFilter(), function(err) {
       if ( err ) {
         log.spinner.error("Could not rebuild Task Index Cache");
       }

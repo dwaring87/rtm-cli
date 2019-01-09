@@ -40,7 +40,7 @@ function _prompt(promptIndex, prompts, answerIndex, answers, callback) {
   global._rl.question(prompts[promptIndex] + " ", function(answer) {
 
     // Return with the answers
-    if ( answer === '' ) {
+    if ( promptIndex === 0 && answer === '' ) {
       return _finish(answers, prompts.length, callback);
     }
 

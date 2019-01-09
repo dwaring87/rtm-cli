@@ -82,8 +82,10 @@ The main usage of the program:
       removeTags|rmt [index] [tags...]    Remove one or more tags from a Task
       renameList|mvl [oldName] [newName]  Rename a List
       reset                               Reset cached task indices
+      setUrl|su [index] [url]             Set the URL of a Task
       tags|t                              Display all tags
       uncomp|unc [indices...]             Mark one or more Tasks as not complete
+      url [options] [index...]            Display the associated URL of a Task
       whoami                              Display RTM user information
       overdue                             Display incomplete tasks that are overdue
 ```
