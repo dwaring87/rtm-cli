@@ -4,6 +4,7 @@ const log = require('../utils/log.js');
 const config = require('../utils/config.js');
 const prompt = require('../utils/prompt.js');
 const finish = require('../utils/finish.js');
+const taskIds = require('../../node_modules/rtm-api/src/utils/taskIds.js')
 const opn = require('opn');
 
 
@@ -67,17 +68,34 @@ function _process(index, count=1, max=1) {
     index = parseInt(index.trim());
 
     // Get Task
-    user.tasks.getTask(index, function(err, task) {
+    let method='rtm.tasks.getList';
+
+    let params ={
+      "task_id":  taskIds.getTaskId(user.id,index), //818350699,
+      "taskseries_id": taskIds.getTaskSeriesId(user.id,index), //451691559,
+      "list_id": taskIds.getListId(user.id,index), //414716,
+      "filter": "hasURL:true"
+    }
+
+    user.get(method,params,function(err, resp) {
       if ( err ) {
         log.spinner.error("Could not get Task #" + index + " (" + err.msg + ")");
       }
 
-      // Add URL
-      else if ( task.url !== undefined ) {
-        URLS.push({
-          index: index,
-          url: task.url
-        });
+      else if (typeof resp.tasks.list !== 'undefined') {
+        let taskseries = resp.tasks.list[0].taskseries;
+        let found = false;
+        for (let i = 0; i < taskseries.length; i++) {
+            const ts = taskseries[i];
+            if (ts.id == params.taskseries_id && !found && ts.url !== undefined) {
+                console.log(ts.url);
+                URLS.push({
+                  index: index,
+                  url: ts.url
+                });
+                found = true;
+            }
+        }
       }
 
       // Finish
