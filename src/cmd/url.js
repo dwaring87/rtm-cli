@@ -58,6 +58,28 @@ function _promptFinished(answers) {
  */
 function _process(index, count=1, max=1) {
 
+  /**
+   * Parses the task series for tasks with URL and returns those for the output
+   * @private
+   * @param {RTM task series} taskseries 
+   * @param {any} params  An object including the taskseries_id, 
+  *          task_id, list_id and a has URL filter
+   */
+  function _findUrls(taskseries,params) {
+    let found = false;
+    for (let i = 0; i < taskseries.length; i++) {
+        const ts = taskseries[i];
+        if (ts.id == params.taskseries_id && !found && ts.url !== undefined) {
+            URLS.push({
+              index: index,
+              url: ts.url,
+              name: ts.name
+            });
+            found = true;
+        }
+    }
+  }
+
   // Display info
   log.spinner.start("Getting Task(s)...");
 
@@ -84,18 +106,7 @@ function _process(index, count=1, max=1) {
 
       else if (typeof resp.tasks.list !== 'undefined') {
         let taskseries = resp.tasks.list[0].taskseries;
-        let found = false;
-        for (let i = 0; i < taskseries.length; i++) {
-            const ts = taskseries[i];
-            if (ts.id == params.taskseries_id && !found && ts.url !== undefined) {
-                console.log(ts.url);
-                URLS.push({
-                  index: index,
-                  url: ts.url
-                });
-                found = true;
-            }
-        }
+        _findUrls(taskseries,params);
       }
 
       // Finish
@@ -120,7 +131,7 @@ function _processFinished(count, max) {
 
     // Print URLs
     for ( let i = 0; i < URLS.length; i++ ) {
-      console.log("[" + URLS[i].index + "] " + URLS[i].url);
+      console.log(URLS[i].index + " " + URLS[i].name + " " + URLS[i].url);
     }
 
     // Open URL
