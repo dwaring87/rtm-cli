@@ -50,7 +50,8 @@ function action(args, env) {
       // Parse each task
       for ( let i = 0; i < tasks.length; i++ ) {
         let task = tasks[i];
-        let taskDue = task.due === undefined ? 0 : task.due.getTime();
+        let taskDue = task.due === undefined ? 0 : task.due.getDate();
+        let taskDueTime = task.due === undefined ? 0 : task.due.getTime();
 
         // ==== PRINT DUE DATE ==== //
 
@@ -128,13 +129,16 @@ function action(args, env) {
           log.style('#' + task.tags[i], tagstyle);
         }
 
-        // Print Completed Date
+        // Print Completed Date or Due Time
         if ( task.completed ) {
           log.style(' ');
           log.style('x', styles.completed);
           log.style(' ');
           log.style(df(task.completed, config.get().dateformat), styles.completed);
-        }
+        } else {
+	  // Prints due time for incomplete tasks that have a time set
+	  df(taskDueTime,'shortTime') != '12:00 AM' ? log.style(' '+df(taskDueTime,'shortTime'),styles.due) : null;
+	}
 
         // Finish line
         log('');
