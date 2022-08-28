@@ -97,14 +97,12 @@ function action(args, env) {
 
         // Print URL Indicator
         if ( task.url !== undefined ) {
-          // log.style('🔗', urlstyle);
-          printIndicator('url',task,'emoji');
+          printIndicator('url',task);
         }
 
         // Print Note Indicators
         for ( let i = 0; i < task.notes.length; i++ ) {
-          // log.style('📓', notestyle);
-          printIndicator('note',task,'emoji');
+          printIndicator('note',task);
         }
 
         // Print Tags

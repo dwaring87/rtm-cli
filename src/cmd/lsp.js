@@ -82,16 +82,16 @@ function action(args, env) {
 
         // Print the Task Name
         log.style(' ');
-        log.style(task.name, priStyle);
+        log.style(task.name + ' ', priStyle);
 
         // Print URL Indicator
         if ( task.url !== undefined ) {
-          printIndicator('url',task,'emoji');
+          printIndicator('url',task);
         }
 
         // Print Note Indicators
         for ( let i = 0; i < task.notes.length; i++ ) {
-          printIndicator('note',task,'emoji');
+          printIndicator('note',task);
         }
 
         // Print Tags

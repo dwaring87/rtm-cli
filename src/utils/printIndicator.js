@@ -9,12 +9,14 @@ const log = require('./log.js');
  * @param {object} task the task to print the indicator
  * @param {string} style emoji|text
  */
-function printIndicator(type,task,style) {
+function printIndicator(type,task) {
     let styles = config.get().styles;
+    let iconType = config.get().iconType;
 
     let indicatorStyle = task.isCompleted ? styles.completed : styles[type];
     let noteIndicator,urlIndicator;
-    switch (style) {
+    iconType = iconType || 'text'; // defaults to text if nothing included
+    switch (iconType) {
         case 'emoji':
             noteIndicator = '📓';
             urlIndicator = '🔗'
