@@ -136,9 +136,11 @@ function action(args, env) {
           log.style(' ');
           log.style(df(task.completed, config.get().dateformat), styles.completed);
         } else {
-	  // Prints due time for incomplete tasks that have a time set
-	  df(taskDueTime,'shortTime') != '12:00 AM' ? log.style(' '+df(taskDueTime,'shortTime'),styles.due) : null;
-	}
+          // Prints due time for incomplete tasks that have a time set
+          df(taskDueTime,'shortTime') != '12:00 AM' && taskDueTime!= 0 
+            ? log.style(' '+df(taskDueTime,'shortTime'),styles.due) 
+            : null;
+        }
 
         // Finish line
         log('');
