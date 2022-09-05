@@ -118,7 +118,7 @@ function action(args, env) {
 
         // Print Note Indicators
         for ( let i = 0; i < task.notes.length; i++ ) {
-          printIndicator('note',task);
+          printIndicator('notes',task);
         }
 
         // Print Tags

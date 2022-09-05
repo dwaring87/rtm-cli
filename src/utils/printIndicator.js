@@ -14,21 +14,21 @@ function printIndicator(type,task) {
     let iconType = config.get().iconType;
 
     let indicatorStyle = task.isCompleted ? styles.completed : styles[type];
-    let noteIndicator,urlIndicator;
+    let notesIndicator,urlIndicator;
     iconType = iconType || 'text'; // defaults to text if nothing included
     switch (iconType) {
         case 'emoji':
-            noteIndicator = '📓';
+            notesIndicator = '📓';
             urlIndicator = '🔗'
         break;
         case 'text':  
         default:
-            noteIndicator = '*';
+            notesIndicator = '*';
             urlIndicator = '+'
         break;
     }
     let indicators = {
-        note: noteIndicator,
+        notes: notesIndicator,
         url: urlIndicator
     }
     log.style(indicators[type], indicatorStyle);
