@@ -4,7 +4,6 @@ const log = require('../utils/log.js');
 const config = require('../utils/config.js');
 const prompt = require('../utils/prompt.js');
 const finish = require('../utils/finish.js');
-const taskIds = require('../../node_modules/rtm-api/src/utils/taskIds.js')
 
 
 let NOTES = [];
@@ -54,70 +53,33 @@ function _promptFinished(answers) {
  */
 function _process(index, count=1, max=1) {
 
-  /**
-   * Parses the task series for tasks with Notes and returns those for the output
-   * @private
-   * @param {RTM task series} taskseries 
-   * @param {any} params  An object including the taskseries_id, 
-  *          task_id, list_id and a has Note filter
-   */
-  function _findNotes(taskseries,params) {
-    let found = false;
-    for (let i = 0; i < taskseries.length; i++) {
-        const ts = taskseries[i];
-        if (ts.id == params.taskseries_id && !found && ts.notes !== undefined) {
-            NOTES.push({
-              index: index,
-              name: ts.name,
-              notes: ts.notes.note
-            });
-            found = true;
-        }
-    }
-  }
-
   // Display info
   log.spinner.start("Getting Task(s)...");
 
   // Get User
   config.user(function(user) {
-
-    getTaskByIndex(user,index);
-
-  });
-
-  function getTaskByIndex(user,index) {
-    // Parse arguments
     index = parseInt(index.trim());
 
     // Get Task
-    let method='rtm.tasks.getList';
+    user.tasks.getTask(index, function(err, task) {
+      if ( err ) {
+        log.spinner.error("Could not get Task #" + index + " (" + err.msg + ")");
+      }
 
-    let params ={
-    "task_id":  taskIds.getTaskId(user.id,index), //818350699,
-    "taskseries_id": taskIds.getTaskSeriesId(user.id,index), //451691559,
-    "list_id": taskIds.getListId(user.id,index), //414716,
-    "filter": "hasNotes:true"
-    }
+      if ( task ) {
+        NOTES.push({
+          index: index,
+          name: task.name,
+          notes: task.notes
+        });
+      }
 
-    user.get(method,params,function(err, resp) {
-        if ( err ) {
-            log.spinner.error("Could not get Task #" + index + " (" + err.msg + ")");
-            return null;
-        }
-
-        else if (typeof resp.tasks.list !== 'undefined') {
-            let taskseries = resp.tasks.list[0].taskseries;
-            _findNotes(taskseries,params);
-        }
-
-        // Finish
-        _processFinished(count, max);
+      // Finish
+      _processFinished(count, max);
 
     });
-}
 
-
+  });
 }
 
 /**
@@ -133,19 +95,17 @@ function _processFinished(count, max) {
 
     // Get Display Styles
     let styles = config.get().styles;
-    // console.log(styles);
 
     // Print NOTES
     for ( let i = 0; i < NOTES.length; i++ ) {
       log.style(_pad(NOTES[i].index , NOTES.length), styles.index);
       log.style(' ');
-      log.style(NOTES[i].name);
+      log.style(NOTES[i].name, true);
       for (const note of NOTES[i].notes) {
-        log();
         log.style('Note: ',styles.due)
-        log.style(' ' + note.title,true);
+        log.style(note.title ? note.title : '',true);
         log('========');
-        log(note.$t);
+        log(note.body);
         log();
       }
 
@@ -153,32 +113,23 @@ function _processFinished(count, max) {
 
     return finish();
   }
+}
 
-  function _finish(count, max) {
-    if ( count === max-1 ) {
-      return finish();
-    }
+/**
+ * Pad the Index number with leading 0s
+ * @param index Task Index Number
+ * @param maxIndex Max Task Index
+ * @returns {string}
+ * @private
+ */
+function _pad(index, maxIndex) {
+  let max = maxIndex.toString().length;
+  let digits = index.toString().length;
+  let delta = max - digits;
+  for ( let i = 0; i < delta; i++ ) {
+    index = '0' + index;
   }
-
-    /**
-     * Pad the Index number with leading 0s
-     * @param index Task Index Number
-     * @param maxIndex Max Task Index
-     * @returns {string}
-     * @private
-     */
-    function _pad(index, maxIndex) {
-        let max = maxIndex.toString().length;
-        let digits = index.toString().length;
-        let delta = max - digits;
-        for ( let i = 0; i < delta; i++ ) {
-        index = '0' + index;
-        }
-        return index;
-    }
-
-
-
+  return index;
 }
 
 
