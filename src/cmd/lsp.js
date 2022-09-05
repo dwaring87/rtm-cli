@@ -8,6 +8,7 @@ const finish = require('../utils/finish.js');
 const parseFilter = require('../utils/filter.js');
 const config = require('../utils/config.js');
 const styles = config.get().styles;
+const printIndicator = require('../utils/printIndicator.js')
 
 
 /**
@@ -81,18 +82,16 @@ function action(args, env) {
 
         // Print the Task Name
         log.style(' ');
-        log.style(task.name, priStyle);
+        log.style(task.name + ' ', priStyle);
 
         // Print URL Indicator
-        let urlstyle = task.isCompleted ? styles.completed : styles.url;
         if ( task.url !== undefined ) {
-          log.style('+', urlstyle);
+          printIndicator('url',task);
         }
 
         // Print Note Indicators
-        let notestyle = task.isCompleted ? styles.completed : styles.notes;
         for ( let i = 0; i < task.notes.length; i++ ) {
-          log.style('*', notestyle);
+          printIndicator('note',task);
         }
 
         // Print Tags

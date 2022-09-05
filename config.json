@@ -25,6 +25,7 @@
     "tags": "magenta",
     "due": "green"
   },
+  "iconType": "text",
   "aliases": [
     {
       "name": "overdue",
