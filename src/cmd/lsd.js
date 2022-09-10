@@ -7,6 +7,7 @@ const log = require('../utils/log.js');
 const finish = require('../utils/finish.js');
 const parseFilter = require('../utils/filter.js');
 const config = require('../utils/config.js');
+const printIndicator = require('../utils/printIndicator.js')
 
 
 /**
@@ -50,7 +51,8 @@ function action(args, env) {
       // Parse each task
       for ( let i = 0; i < tasks.length; i++ ) {
         let task = tasks[i];
-        let taskDue = task.due === undefined ? 0 : task.due.getTime();
+        let taskDue = task.due === undefined ? 0 : task.due.getDate();
+        let taskDueTime = task.due === undefined ? 0 : task.due.getTime();
 
         // ==== PRINT DUE DATE ==== //
 
@@ -107,18 +109,16 @@ function action(args, env) {
 
         // Print the Task Name
         log.style(' ');
-        log.style(task.name, priStyle);
+        log.style(task.name + ' ', priStyle);
 
         // Print URL Indicator
-        let urlstyle = task.isCompleted ? styles.completed : styles.url;
         if ( task.url !== undefined ) {
-          log.style('+', urlstyle);
+          printIndicator('url',task);
         }
 
         // Print Note Indicators
-        let notestyle = task.isCompleted ? styles.completed : styles.notes;
         for ( let i = 0; i < task.notes.length; i++ ) {
-          log.style('*', notestyle);
+          printIndicator('notes',task);
         }
 
         // Print Tags
@@ -128,12 +128,17 @@ function action(args, env) {
           log.style('#' + task.tags[i], tagstyle);
         }
 
-        // Print Completed Date
+        // Print Completed Date or Due Time
         if ( task.completed ) {
           log.style(' ');
           log.style('x', styles.completed);
           log.style(' ');
           log.style(df(task.completed, config.get().dateformat), styles.completed);
+        } else {
+          // Prints due time for incomplete tasks that have a time set
+          df(taskDueTime,'shortTime') != '12:00 AM' && taskDueTime!= 0 
+            ? log.style(' '+df(taskDueTime,'shortTime'),styles.due) 
+            : null;
         }
 
         // Finish line
