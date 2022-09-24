@@ -61,9 +61,14 @@ function _process(index, count=1, max=1) {
     index = parseInt(index.trim());
 
     // Get Task
-    user.tasks.getTask(index, function(err, task) {
+    user.tasks.getTask(index, "hasNotes:true", function(err, task) {
       if ( err ) {
-        log.spinner.error("Could not get Task #" + index + " (" + err.msg + ")");
+        if ( err.code === -3 ) {
+          log.spinner.warn("Task #" + index + " does not have any notes");
+        }
+        else {
+          log.spinner.error("Could not get Task #" + index + " (" + err.msg + ")");
+        }
       }
 
       if ( task ) {
