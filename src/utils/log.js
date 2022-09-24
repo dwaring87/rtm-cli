@@ -112,7 +112,7 @@ log.spinner = {
     }
   },
 
-  /***
+  /**
    * Set the spinner as an error with the specified text
    * @param {string} text The text to log
    */
@@ -123,6 +123,21 @@ log.spinner = {
       }
       else {
         log("[error] " + text);
+      }
+    }
+  },
+
+  /**
+   * Set the spinner as a warning with the specified text
+   * @param {string} text The text to log
+   */
+  warn: function(text) {
+    if ( _status() ) {
+      if ( !_plain() ) {
+        spinner.warn(text);
+      }
+      else {
+        log("[warning] " + text);
       }
     }
   }
