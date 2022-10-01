@@ -4,6 +4,7 @@ const log = require('../utils/log.js');
 const config = require('../utils/config.js');
 const prompt = require('../utils/prompt.js');
 const finish = require('../utils/finish.js');
+const filter = require('../utils/filter')
 const opn = require('opn');
 
 
@@ -66,11 +67,12 @@ function _process(index, count=1, max=1) {
     // Parse arguments
     index = parseInt(index.trim());
 
+    const filterString = filter("hasUrl:true");
     // Get Task
-    user.tasks.getTask(index, "hasUrl: true", function(err, task) {
+    user.tasks.getTask(index, filterString, function(err, task) {
       if ( err ) {
         if ( err.code === -3 ) {
-          log.spinner.warn("Task #" + index + " does not have a URL");
+          log.spinner.warn("Task #" + index + " does not have a URL or is not found");
         }
         else {
           log.spinner.error("Could not get Task #" + index + " (" + err.msg + ")");
@@ -81,7 +83,8 @@ function _process(index, count=1, max=1) {
       else if ( task.url !== undefined ) {
         URLS.push({
           index: index,
-          url: task.url
+          url: task.url,
+          name: task.name
         });
       }
 
@@ -107,7 +110,7 @@ function _processFinished(count, max) {
 
     // Print URLs
     for ( let i = 0; i < URLS.length; i++ ) {
-      console.log("[" + URLS[i].index + "] " + URLS[i].url);
+      console.log(URLS[i].index + " " + URLS[i].name + " " + URLS[i].url);
     }
 
     // Open URL

@@ -39,7 +39,7 @@
     "deepmerge": "^2.0.1",
     "opn": "^5.4.0",
     "ora": "^1.3.0",
-    "rtm-api": "^1.3.0",
+    "rtm-api": "github:dwaring87/rtm-api",
     "window-size": "^1.1.0"
   },
   "devDependencies": {
