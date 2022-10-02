@@ -63,12 +63,8 @@ function _process(index, count=1, max=1) {
     index = parseInt(index.trim());
 
     // Get Task
-    // user.tasks.getTask(index, "hasNotes:true", function(err, task) {
     let filterString = filter("hasNotes:true")
-    // console.log(filterString)
     user.tasks.getTask(index, filterString, function(err, task) {
-    // user.tasks.getTask(index, "hasNotes:true", function(err, task) {
-      // console.log('err',err)
       if ( err ) {
         if ( err.code === -3 ) {
           log.spinner.warn("Task #" + index + " does not have any notes or is not found.");
