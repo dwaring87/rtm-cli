@@ -67,8 +67,8 @@ function _process(index, count=1, max=1) {
     // Parse arguments
     index = parseInt(index.trim());
 
-    const filterString = filter("hasUrl:true");
     // Get Task
+    const filterString = filter("hasUrl:true");
     user.tasks.getTask(index, filterString, function(err, task) {
       if ( err ) {
         if ( err.code === -3 ) {
