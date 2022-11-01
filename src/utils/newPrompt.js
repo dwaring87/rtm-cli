@@ -9,7 +9,7 @@ const log = require('./log.js');
 function taskPrompt(text) {
     let tasks = []
     let n
-    log.style("[Enter a blank line when finished]", "dim", true);
+    log.style('[Enter a blank line when finished]', 'dim', true);
     while ( n != '' ) {
         n = prompt(text)
         if (parseInt(n) ) {
@@ -17,7 +17,7 @@ function taskPrompt(text) {
          } else if (n == '') {
             break
          } else {
-            log.style('Enter a task index number, please.',"red",true)
+            log.style('Enter a task index number, please.','red',true)
          } 
     }
 

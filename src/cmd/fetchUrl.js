@@ -3,8 +3,8 @@
 const log = require('../utils/log.js');
 const config = require('../utils/config.js');
 const finish = require('../utils/finish.js');
-const filter = require('../utils/filter')
-const { taskPrompt} = require('../utils/newPrompt')
+const filter = require('../utils/filter');
+const { taskPrompt } = require('../utils/newPrompt')
 const opn = require('opn');
 
 
@@ -41,12 +41,12 @@ async function action(args, env) {
   for (const arg in args[0]) {
       if (Object.hasOwnProperty.call(args[0], arg)) {
           const index = args[0][arg];
-          const filterString = filter("hasUrl:true");
+          const filterString = filter('hasUrl:true');
           let task =  await user.tasks.rtmIndexFetchTask(index,filterString)
           if (task.err == undefined ) {
               task = task.task
           } else {
-            log.spinner.warn("Task #" + index + " does not have a URL or is not found");
+            log.spinner.warn('Task #' + index + ' does not have a URL or is not found');
           }
 
           // Push to URLS
