@@ -8,6 +8,7 @@ const log = require('./log.js');
  * Prompt the User for a set of answers
  * @param {string} prompt One or more prompts to question the User
  * @param {function} callback Callback function(answers)
+ * @deprecated Use taskPrompt from newPrompt
  */
 function prompt(prompt, callback) {
 
