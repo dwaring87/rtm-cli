@@ -39,6 +39,7 @@
     "deepmerge": "^2.0.1",
     "opn": "^5.4.0",
     "ora": "^1.3.0",
+    "prompt-sync": "^4.2.0",
     "rtm-api": "github:beauraines/rtm-api#fetchSingleTask",
     "window-size": "^1.1.0"
   },

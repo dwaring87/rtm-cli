@@ -2,9 +2,9 @@
 
 const log = require('../utils/log.js');
 const config = require('../utils/config.js');
-const prompt = require('../utils/prompt.js');
 const finish = require('../utils/finish.js');
 const filter = require('../utils/filter')
+const { taskPrompt} = require('../utils/newPrompt')
 const opn = require('opn');
 
 
@@ -27,11 +27,12 @@ async function action(args, env) {
 
   const user = config.user(user => user)
 
+  let indices = []
+
   // Prompt for task
   if ( args.length < 1 ) {
-    // TODO Add interactive support
-    // prompt('Task:', _promptFinished);
-    log.spinner.warn('Interactive mode not supported')
+    indices = taskPrompt('Task:')
+    args[0] = indices
   }
 
 
@@ -61,7 +62,7 @@ async function action(args, env) {
   // Print URLs
   log.spinner.stop();
   for ( let i = 0; i < URLS.length; i++ ) {
-      console.log(URLS[i].index + " " + URLS[i].name + " " + URLS[i].url);
+      log(URLS[i].index + " " + URLS[i].name + " " + URLS[i].url);
       }
 
   // Open URL
