@@ -1,6 +1,7 @@
 'use strict';
 
-const prompt = require('../utils/prompt.js');
+const { prompt } = require('../utils/prompt.js');
+
 const log = require('../utils/log.js');
 const config = require('../utils/config.js');
 const finish = require('../utils/finish.js');

@@ -2,7 +2,8 @@
 
 const log = require('../utils/log.js');
 const config = require('../utils/config.js');
-const prompt = require('../utils/prompt.js');
+const { prompt } = require('../utils/prompt.js');
+
 const finish = require('../utils/finish.js');
 const filter = require('../utils/filter')
 const opn = require('opn');
