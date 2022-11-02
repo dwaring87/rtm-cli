@@ -80,7 +80,7 @@ async function action(args, env) {
 
 
 module.exports = {
-    command: 'fetchUrl [indices...]',
+    command: 'url [indices...]',
     options: [
       {
         option: "-o, --open",
