@@ -2,6 +2,7 @@
 
 const log = require('../utils/log.js');
 const config = require('../utils/config.js');
+const filter = require('../utils/filter')
 const finish = require('../utils/finish.js');
 const styles = config.get().styles;
 
@@ -11,9 +12,12 @@ const styles = config.get().styles;
 function action(args, env) {
   config.user(function(user) {
     log.spinner.start("Getting Tags...");
-
+    
     // Get Tasks
-    user.tasks.get('isTagged:true', function(err, tasks) {
+    const filterString = filter('isTagged:true');
+    // TODO use a new fetch function that doesn't create RTM Tasks for everything returned
+    // TODO this should call the rtm.tags.getList, but then it wouldn't be able to show the task counts
+    user.tasks.get(filterString, function(err, tasks) {
       if ( err ) {
         log.spinner.error("Could not get tags (" + err.msg + ")");
         return finish();
