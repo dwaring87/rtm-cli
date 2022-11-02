@@ -8,7 +8,8 @@ const promptSync = require('prompt-sync')();
  * Prompt the User for a set of answers
  * @param {string} prompt One or more prompts to question the User
  * @param {function} callback Callback function(answers)
- * @deprecated Use taskPrompt instead
+ * @deprecated Use indexPrompt
+ instead
  */
 function prompt(prompt, callback) {
 
@@ -99,10 +100,10 @@ function _finish(answers, promptcount, callback) {
 
 /**
  * Prompts user for integer input until they enter a blank line
- * @param {string} text 
+ * @param {string} Prompt text to display
  * @returns {number[]} array of user input integers
  */
- function taskPrompt(text) {
+ function indexPrompt(text) {
   let tasks = []
   let n
   log.style('[Enter a blank line when finished]', 'dim', true);
@@ -122,4 +123,4 @@ function _finish(answers, promptcount, callback) {
 }
 
 
-module.exports = {prompt,taskPrompt};
+module.exports = {prompt,indexPrompt};

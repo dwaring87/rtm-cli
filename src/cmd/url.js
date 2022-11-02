@@ -4,7 +4,7 @@ const log = require('../utils/log.js');
 const config = require('../utils/config.js');
 const finish = require('../utils/finish.js');
 const filter = require('../utils/filter');
-const { taskPrompt } = require('../utils/prompt')
+const { indexPrompt } = require('../utils/prompt')
 const opn = require('opn');
 
 
@@ -31,7 +31,7 @@ async function action(args, env) {
 
   // Prompt for task
   if ( args.length < 1 ) {
-    indices = taskPrompt('Task:')
+    indices = indexPrompt('Task:')
     args[0] = indices
   }
 
